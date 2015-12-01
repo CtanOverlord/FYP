@@ -27,6 +27,11 @@
 
 #include "AnimationManager.h"
 
+#include "ContactListener.h"
+
+#include "ShipManager.h"
+
+//doxygen
 
 static const float SCALE = 30.f;
 
@@ -34,6 +39,10 @@ int main()
 {
 	b2Vec2 Gravity(0.f, 0);
 	b2World World(Gravity);
+
+	ContactListener contactListener;
+
+	World.SetContactListener(&contactListener);
 
 	sf::ContextSettings settings;
 	settings.depthBits = 24;
@@ -43,13 +52,20 @@ int main()
 	settings.minorVersion = 0;
 
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "FYP", sf::Style::Default, settings);
-
+	
 	window.setFramerateLimit(60);
 	
 	AnimationManager aniMan = AnimationManager();
 	ProjectileManager projMan = ProjectileManager(World, aniMan);
+	ShipManager shipMan = ShipManager(World, aniMan, projMan);
+
+	shipMan.CreateShip(sf::Vector2f(300, 300), "player");
+
+	shipMan.CreateShip(sf::Vector2f(700, 300), "enemy");
 	
-	Ship ship = Ship(World, projMan, aniMan);
+	//Ship ship = Ship(World, sf::Vector2f(300, 300), "player", projMan, aniMan);
+
+	//Ship ship2 = Ship(World, sf::Vector2f(700, 300), "enemy", projMan, aniMan);
 
 	sf::Texture background;
 
@@ -71,9 +87,9 @@ int main()
 	backgroundSprite.setOrigin(sf::Vector2f(1715, 1733));
 
 
-	sf::View view(sf::FloatRect(ship.getSprite().getPosition().x, ship.getSprite().getPosition().y, 1280, 720));
+	sf::View view(sf::FloatRect(shipMan.ships.at(0)->getSprite().getPosition().x, shipMan.ships.at(0)->getSprite().getPosition().y, 1280, 720));
 
-	view.setCenter(sf::Vector2f(ship.getSprite().getPosition().x, ship.getSprite().getPosition().y));
+	view.setCenter(sf::Vector2f(shipMan.ships.at(0)->getSprite().getPosition().x, shipMan.ships.at(0)->getSprite().getPosition().y));
 
 	window.setView(view);
 
@@ -91,7 +107,7 @@ int main()
 
 		World.Step(1 / 60.f, 8, 3);
 
-		view.setCenter(sf::Vector2f(ship.getSprite().getPosition().x, ship.getSprite().getPosition().y));
+		view.setCenter(sf::Vector2f(shipMan.ships.at(0)->getSprite().getPosition().x, shipMan.ships.at(0)->getSprite().getPosition().y));
 
 		window.setView(view);
 
@@ -122,13 +138,13 @@ int main()
 				}
 		}
 
-		ship.Update();
 		projMan.Update();
 		aniMan.Update();
+		shipMan.Update();
 
 		window.clear();
 		window.draw(backgroundSprite);
-		ship.Draw(window);
+		shipMan.Draw(window);
 		projMan.Draw(window);
 		aniMan.Draw(window);
 		window.display();

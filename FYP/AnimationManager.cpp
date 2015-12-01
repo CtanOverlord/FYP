@@ -5,6 +5,102 @@ AnimationManager::AnimationManager()
 
 	srand(time(NULL));
 
+	if (!largeExplosionTexture.loadFromFile("explosionSheet3.png"))
+	{
+
+	}
+
+	largeExplosionTexture.setSmooth(true);
+
+	for (int i = 0; i < 9; i++)
+	{
+		largeExplosion.addFrame(sf::IntRect(0, 100 * i, 100, 100));
+		largeExplosion.addFrame(sf::IntRect(100, 100 * i, 100, 100));
+		largeExplosion.addFrame(sf::IntRect(200, 100 * i, 100, 100));
+		largeExplosion.addFrame(sf::IntRect(300, 100 * i, 100, 100));
+		largeExplosion.addFrame(sf::IntRect(400, 100 * i, 100, 100));
+		largeExplosion.addFrame(sf::IntRect(500, 100 * i, 100, 100));
+		largeExplosion.addFrame(sf::IntRect(600, 100 * i, 100, 100));
+		largeExplosion.addFrame(sf::IntRect(700, 100 * i, 100, 100));
+		largeExplosion.addFrame(sf::IntRect(800, 100 * i, 100, 100));
+	}
+
+	largeExplosion.setSpriteSheet(largeExplosionTexture);
+	//largeExplosion.addFrame(sf::IntRect(0, 0, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(64, 0, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(128, 0, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(192, 0, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(256, 0, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(0, 64, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(64, 64, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(128, 64, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(192, 64, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(256, 64, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(0, 128, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(64, 128, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(128, 128, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(192, 128, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(256, 128, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(0, 192, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(64, 192, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(128, 192, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(192, 192, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(256, 192, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(0, 256, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(64, 256, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(128, 256, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(192, 256, 64, 64));
+	//largeExplosion.addFrame(sf::IntRect(256, 256, 64, 64));
+
+	if (!smallExplosionTexture.loadFromFile("explosionSheet3.png"))
+	{
+
+	}
+
+	smallExplosionTexture.setSmooth(true);
+
+	smallExplosion.setSpriteSheet(smallExplosionTexture);
+
+	for (int i = 0; i < 9;  i++)
+	{
+		smallExplosion.addFrame(sf::IntRect(0, 100 * i, 100, 100));
+		smallExplosion.addFrame(sf::IntRect(100, 100 * i, 100, 100));
+		smallExplosion.addFrame(sf::IntRect(200, 100 * i, 100, 100));
+		smallExplosion.addFrame(sf::IntRect(300, 100 * i, 100, 100));
+		smallExplosion.addFrame(sf::IntRect(400, 100 * i, 100, 100));
+		smallExplosion.addFrame(sf::IntRect(500, 100 * i, 100, 100));
+		smallExplosion.addFrame(sf::IntRect(600, 100 * i, 100, 100));
+		smallExplosion.addFrame(sf::IntRect(700, 100 * i, 100, 100));
+		smallExplosion.addFrame(sf::IntRect(800, 100 * i, 100, 100));
+
+
+		/*smallExplosion.addFrame(sf::IntRect(0, 0, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(64, 0, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(128, 0, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(192, 0, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(256, 0, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(0, 64, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(64, 64, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(128, 64, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(192, 64, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(256, 64, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(0, 128, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(64, 128, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(128, 128, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(192, 128, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(256, 128, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(0, 192, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(64, 192, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(128, 192, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(192, 192, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(256, 192, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(0, 256, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(64, 256, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(128, 256, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(192, 256, 64, 64));
+		smallExplosion.addFrame(sf::IntRect(256, 256, 64, 64));*/
+	}
+
 	if (!explosionTexture.loadFromFile("explosionSheet.png"))
 	{
 
@@ -107,6 +203,28 @@ void AnimationManager::CreateAnimation(sf::Vector2f position, float type, float 
 		animations.at(animations.size() - 1)->setColor(sf::Color(255, 255, 255, 200));
 		animations.at(animations.size() - 1)->setRotation(angle);
 		animations.at(animations.size() - 1)->play(fireEffect);
+	}
+	if (type == 3)
+	{
+		animations.push_back(new AnimatedSprite(sf::seconds(0.050), true, false));
+		animations.at(animations.size() - 1)->setOrigin(50, 50);
+		animations.at(animations.size() - 1)->setPosition(position);
+		//float scale1 = (rand() % 40 + 40) + 4;
+		animations.at(animations.size() - 1)->setScale(sf::Vector2f(50 / 10, 50 / 10));
+		//animations.at(animations.size() - 1)->setColor(sf::Color(255, 255, 255, 200));
+		animations.at(animations.size() - 1)->setRotation(rand() % 360 + 1);
+		animations.at(animations.size() - 1)->play(largeExplosion);
+	}
+	if (type == 4)
+	{
+		animations.push_back(new AnimatedSprite(sf::seconds(0.050), true, false));
+		animations.at(animations.size() - 1)->setOrigin(50, 50);
+		animations.at(animations.size() - 1)->setPosition(position);
+		float scale1 = (rand() % 2 + 1) + 1.5;
+		animations.at(animations.size() - 1)->setScale(sf::Vector2f(scale1 / 10, scale1 / 10));
+		//animations.at(animations.size() - 1)->setColor(sf::Color(255, 255, 255, 200));
+		animations.at(animations.size() - 1)->setRotation(rand() % 360 + 1);
+		animations.at(animations.size() - 1)->play(smallExplosion);
 	}
 
 	DeleteExpired();

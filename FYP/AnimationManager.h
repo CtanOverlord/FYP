@@ -33,8 +33,12 @@ private:
 	vector<AnimatedSprite*> animations;
 	vector<Animation*> animationSheets;
 	sf::Texture explosionTexture;
+	sf::Texture largeExplosionTexture;
+	sf::Texture smallExplosionTexture;
 	sf::Texture fireEffectTexture;
 	Animation explosion;
+	Animation largeExplosion;
+	Animation smallExplosion;
 	Animation fireEffect;
 	sf::Clock frameClock;
 

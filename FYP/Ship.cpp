@@ -3,12 +3,20 @@
 
 static const float SCALE = 30.f;
 
-Ship::Ship(b2World& World, ProjectileManager & projManager, AnimationManager& a)
+Ship::Ship(b2World& World, sf::Vector2f position, string t, ProjectileManager & projManager, AnimationManager& a)
 {
 	if (!shipTexture.loadFromFile("Ship.png"))
 	{
 		// error...
 	}
+
+	destructionTimer = 240;
+
+	delayTimer = 0;
+
+	delay = 19; // or 17
+
+	health = 1;
 
 	shipTexture.setSmooth(true);
 
@@ -16,14 +24,18 @@ Ship::Ship(b2World& World, ProjectileManager & projManager, AnimationManager& a)
 
 	shipSprite.setScale(sf::Vector2f(0.5f, 0.5f));
 
-	shipSprite.setPosition(sf::Vector2f(300, 300));
+	shipSprite.setPosition(sf::Vector2f(position.x, position.y));
 
 	shipSprite.setOrigin(sf::Vector2f(200, 300));
+
+	destroyed = false;
 
 	if (!boosterTexture.loadFromFile("Boosters4.png"))
 	{
 		// error...
 	}
+
+	type = t;
 
 	boosterTexture.setSmooth(true);
 
@@ -31,7 +43,7 @@ Ship::Ship(b2World& World, ProjectileManager & projManager, AnimationManager& a)
 
 	boosterSprite.setScale(sf::Vector2f(0.5f, 0.25f));
 
-	boosterSprite.setPosition(sf::Vector2f(300, 500));
+	boosterSprite.setPosition(sf::Vector2f(100, 290));
 
 	boosterSprite.setOrigin(sf::Vector2f(140, 1));
 
@@ -49,12 +61,43 @@ Ship::Ship(b2World& World, ProjectileManager & projManager, AnimationManager& a)
 
 	CreateBody();
 
-	turrets.push_back(new Turret(sf::Vector2f(75, 80), *this, *projMan, *aniMan));
-	turrets.push_back(new Turret(sf::Vector2f(124, 80), *this, *projMan, *aniMan));
-	turrets.push_back(new Turret(sf::Vector2f(75, 127), *this, *projMan, *aniMan));
-	turrets.push_back(new Turret(sf::Vector2f(124, 127), *this, *projMan, *aniMan));
-	turrets.push_back(new Turret(sf::Vector2f(75, 175), *this, *projMan, *aniMan));
-	turrets.push_back(new Turret(sf::Vector2f(124, 175), *this, *projMan, *aniMan));
+	turrets.push_back(new Turret(sf::Vector2f(75, 80), *this, type, *projMan, *aniMan));
+	turrets.push_back(new Turret(sf::Vector2f(124, 80), *this, type, *projMan, *aniMan));
+	turrets.push_back(new Turret(sf::Vector2f(75, 127), *this, type, *projMan, *aniMan));
+	turrets.push_back(new Turret(sf::Vector2f(124, 127), *this, type, *projMan, *aniMan));
+	turrets.push_back(new Turret(sf::Vector2f(75, 175), *this, type, *projMan, *aniMan));
+	turrets.push_back(new Turret(sf::Vector2f(124, 175), *this, type, *projMan, *aniMan));
+
+	thrusters.push_back(new Thruster(sf::Vector2f(70, 4), 0, false, "front"));
+	thrusters.push_back(new Thruster(sf::Vector2f(75, 4), 0, false, "front"));
+	thrusters.push_back(new Thruster(sf::Vector2f(130, 4), 0, false, "front"));
+	thrusters.push_back(new Thruster(sf::Vector2f(125, 4), 0, false, "front"));
+	thrusters.push_back(new Thruster(sf::Vector2f(80, 4), 0, false, "front"));
+	thrusters.push_back(new Thruster(sf::Vector2f(120, 4), 0, false, "front"));
+
+	thrusters.push_back(new Thruster(sf::Vector2f(10, 70), 0, false, "topleft"));
+	thrusters.push_back(new Thruster(sf::Vector2f(190, 70), 0, false, "topright"));
+	thrusters.push_back(new Thruster(sf::Vector2f(10, 80), 0, false, "topleft"));
+	thrusters.push_back(new Thruster(sf::Vector2f(190, 80), 0, false, "topright"));
+	thrusters.push_back(new Thruster(sf::Vector2f(10, 75), 0, false, "topleft"));
+	thrusters.push_back(new Thruster(sf::Vector2f(190, 75), 0, false, "topright"));
+	thrusters.push_back(new Thruster(sf::Vector2f(10, 260), 0, false, "botleft"));
+	thrusters.push_back(new Thruster(sf::Vector2f(190, 260), 0, false, "botright"));
+	thrusters.push_back(new Thruster(sf::Vector2f(10, 250), 0, false, "botleft"));
+	thrusters.push_back(new Thruster(sf::Vector2f(190, 250), 0, false, "botright"));
+	thrusters.push_back(new Thruster(sf::Vector2f(10, 255), 0, false, "botleft"));
+	thrusters.push_back(new Thruster(sf::Vector2f(190, 255), 0, false, "botright"));
+
+
+
+	/*70, 4
+		130,4
+		10, 70
+		190, 70
+		10, 230
+		190, 230
+
+	*/
 
 	/*150, 160
 		249, 160
@@ -75,7 +118,6 @@ Ship::Ship(b2World& World, ProjectileManager & projManager, AnimationManager& a)
 
 void Ship::Update()
 {
-
 	boosterSprite.setPosition((shipSprite.getPosition().x - shipSprite.getTextureRect().width / 4) + boosterPoint.x, (shipSprite.getPosition().y - shipSprite.getTextureRect().height / 4) + boosterPoint.y);
 
 	float s = sin(shipSprite.getRotation() * 0.0174532925);
@@ -93,39 +135,174 @@ void Ship::Update()
 
 	boosterSprite.setRotation(shipSprite.getRotation());
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	for (int i = 0; i < thrusters.size(); i++)
 	{
-		shipBody->ApplyAngularImpulse(-200, false);
-		//shipSprite.setRotation(shipSprite.getRotation() - 0.002);
+		thrusters.at(i)->turretSprite.setPosition(((shipSprite.getPosition().x - shipSprite.getTextureRect().width / 4) + thrusters.at(i)->position.x), ((shipSprite.getPosition().y - shipSprite.getTextureRect().height / 4) + thrusters.at(i)->position.y));
+		//thrusters.at(i).y = ((shipSprite.getPosition().y - shipSprite.getTextureRect().height / 4) + thrusters.at(i)->position.y);
+
+		float s1 = sin(shipSprite.getRotation() * 0.0174532925);
+		float c1 = cos(shipSprite.getRotation() * 0.0174532925);
+
+		// translate point back to origin:
+		thrusters.at(i)->turretSprite.setPosition(sf::Vector2f(thrusters.at(i)->turretSprite.getPosition().x - shipSprite.getPosition().x, thrusters.at(i)->turretSprite.getPosition().y - shipSprite.getPosition().y));
+		// rotate point
+		float xnew1 = thrusters.at(i)->turretSprite.getPosition().x * c1 - thrusters.at(i)->turretSprite.getPosition().y * s1;
+		float ynew1 = thrusters.at(i)->turretSprite.getPosition().x * s1 + thrusters.at(i)->turretSprite.getPosition().y * c1;
+
+		// translate point back:
+		thrusters.at(i)->turretSprite.setPosition(sf::Vector2f(xnew1 + shipSprite.getPosition().x, ynew1 + shipSprite.getPosition().y));
+
+		if (thrusters.at(i)->ori == "front")
+		{
+			thrusters.at(i)->turretSprite.setRotation(shipSprite.getRotation());
+		}
+		else if (thrusters.at(i)->ori == "topleft" || thrusters.at(i)->ori == "botleft")
+		{
+			thrusters.at(i)->turretSprite.setRotation(shipSprite.getRotation() - 90);
+		}
+		else if (thrusters.at(i)->ori == "topright" || thrusters.at(i)->ori == "botright")
+		{
+			thrusters.at(i)->turretSprite.setRotation(shipSprite.getRotation() + 90);
+		}
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+
+	for (int i = 0; i < thrusters.size(); i++)
 	{
-		shipBody->ApplyAngularImpulse(200, false);
-		//shipSprite.setRotation(shipSprite.getRotation() + 0.002);
+		thrusters.at(i)->active = false;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+
+	if (type == "player" && health > 0)
 	{
-		shipBody->ApplyLinearImpulse(b2Vec2(velocity2.x, velocity2.y), shipBody->GetWorldCenter(), false);
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-	{
-		shipBody->ApplyLinearImpulse(b2Vec2(-velocity2.x, -velocity2.y), shipBody->GetWorldCenter(), false);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-	{
-		shipBody->ApplyLinearImpulse(b2Vec2(velocity.x, velocity.y), shipBody->GetWorldCenter(), false);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-	{
-		shipBody->ApplyLinearImpulse(b2Vec2(-velocity.x, -velocity.y), shipBody->GetWorldCenter(), false);
-		//boosterSprite.setColor(sf::Color(255, 255, 255, 255));
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		{
+			shipBody->ApplyAngularImpulse(-5, false);
+			//shipSprite.setRotation(shipSprite.getRotation() - 0.002);
+			for (int i = 0; i < thrusters.size(); i++)
+			{
+				if (thrusters.at(i)->ori == "topright" || thrusters.at(i)->ori == "botleft")
+				{
+					thrusters.at(i)->active = true;
+				}
+			}
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		{
+			shipBody->ApplyAngularImpulse(5, false);
+			//shipSprite.setRotation(shipSprite.getRotation() + 0.002);
+			for (int i = 0; i < thrusters.size(); i++)
+			{
+				if (thrusters.at(i)->ori == "topleft" || thrusters.at(i)->ori == "botright")
+				{
+					thrusters.at(i)->active = true;
+				}
+			}
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+		{
+			shipBody->ApplyLinearImpulse(b2Vec2(velocity2.x, velocity2.y), shipBody->GetWorldCenter(), false);
+			for (int i = 0; i < thrusters.size(); i++)
+			{
+				if (thrusters.at(i)->ori == "topleft" || thrusters.at(i)->ori == "botleft")
+				{
+					thrusters.at(i)->active = true;
+				}
+			}
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+		{
+			shipBody->ApplyLinearImpulse(b2Vec2(-velocity2.x, -velocity2.y), shipBody->GetWorldCenter(), false);
+			for (int i = 0; i < thrusters.size(); i++)
+			{
+				if (thrusters.at(i)->ori == "topright" || thrusters.at(i)->ori == "botright")
+				{
+					thrusters.at(i)->active = true;
+				}
+			}
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		{
+			shipBody->ApplyLinearImpulse(b2Vec2(velocity.x, velocity.y), shipBody->GetWorldCenter(), false);
+			for (int i = 0; i < thrusters.size(); i++)
+			{
+				if (thrusters.at(i)->ori == "front")
+				{
+					thrusters.at(i)->active = true;
+				}
+			}
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		{
+			shipBody->ApplyLinearImpulse(b2Vec2(-velocity.x, -velocity.y), shipBody->GetWorldCenter(), false);
+			if (speed < 1)
+			{
+				speed += 0.01f;
+			}
+		}
+		else
+		{
+			if (speed > 0.01f)
+			{
+				speed -= 0.01f;
+			}
+			//boosterSprite.setColor(sf::Color(255, 255, 255, 0));
+		}
 	}
 	else
 	{
-		//boosterSprite.setColor(sf::Color(255, 255, 255, 0));
+
+	}
+	
+	if (type == "enemy" && health > 0)
+	{
+
+	}
+	else if (type == "enemy" && health < 0)
+	{
+		destructionTimer--;
+		if (destructionTimer > 0)
+		{
+			if (delayTimer < 0)
+			{
+				float temp = rand() % 4 + 1;
+				float tempX;
+				float tempY;
+				if (temp == 1)
+				{
+					tempX = shipSprite.getPosition().x + rand() % 100 + 1;
+					tempY = shipSprite.getPosition().y + rand() % 100 + 1;
+				}
+				else if (temp == 2)
+				{
+					tempX = shipSprite.getPosition().x - rand() % 100 + 1;
+					tempY = shipSprite.getPosition().y + rand() % 100 + 1;
+				}
+				else if (temp == 3)
+				{
+					tempX = shipSprite.getPosition().x + rand() % 100 + 1;
+					tempY = shipSprite.getPosition().y - rand() % 100 + 1;
+				}
+				else if (temp == 4)
+				{
+					tempX = shipSprite.getPosition().x - rand() % 100 + 1;
+					tempY = shipSprite.getPosition().y - rand() % 100 + 1;
+				}
+
+				aniMan->CreateAnimation(sf::Vector2f(tempX, tempY), 4, 0);
+
+				delay--;
+
+				delayTimer = delay;
+			}
+
+			delayTimer--;
+		}
+		else
+		{
+			destroyed = true;
+		}
 	}
 
-	float speed = sqrt((shipBody->GetLinearVelocity().x * shipBody->GetLinearVelocity().x) + (shipBody->GetLinearVelocity().y * shipBody->GetLinearVelocity().y));
+	//speed = sqrt((shipBody->GetLinearVelocity().x * shipBody->GetLinearVelocity().x) + (shipBody->GetLinearVelocity().y * shipBody->GetLinearVelocity().y));
 
 	boosterSprite.setScale(sf::Vector2f(0.5f, speed / 2));
 
@@ -136,7 +313,8 @@ void Ship::Update()
 	velocity2.y = sin((shipSprite.getRotation()) * 0.0174532925);
 
 	shipSprite.setPosition(shipBody->GetPosition().x * SCALE, shipBody->GetPosition().y * SCALE);
-	shipSprite.setRotation(shipBody->GetAngle());
+
+	shipSprite.setRotation(shipBody->GetAngle() * (180.0f / b2_pi));
 
 	for (int i = 0; i < turrets.size(); i++)
 	{
@@ -152,6 +330,11 @@ void Ship::Draw(sf::RenderWindow & window)
 	for (int i = 0; i < turrets.size(); i++)
 	{
 		turrets.at(i)->Draw(window);
+	}
+	for (int i = 0; i < thrusters.size(); i++)
+	{
+		thrusters.at(i)->Update();
+		thrusters.at(i)->Draw(window);
 	}
 }
 
@@ -170,12 +353,27 @@ sf::Sprite Ship::getSprite()
 	return shipSprite;
 }
 
+float Ship::getHealth()
+{
+	return health;
+}
+
+void Ship::setHealth(float h)
+{
+	health = h;
+}
+
+b2Body* Ship::getBody()
+{
+	return shipBody;
+}
+
 void Ship::CreateBody()
 {
 	b2BodyDef BodyDef;
 	BodyDef.position = b2Vec2(shipSprite.getPosition().x / SCALE, shipSprite.getPosition().y / SCALE);
 	BodyDef.type = b2_dynamicBody;
-	BodyDef.userData = this;
+	BodyDef.userData = this; 
 	b2Body* Body = world->CreateBody(&BodyDef);
 	Body->SetFixedRotation(false);
 	Body->SetSleepingAllowed(false);
@@ -190,93 +388,17 @@ void Ship::CreateBody()
 	FixtureDef.density = 1.0f;
 	FixtureDef.friction = 0.7f;
 	FixtureDef.shape = &Shape;
-	FixtureDef.userData = "Ship";
+	if (type == "player")
+	{
+		FixtureDef.userData = "player";
+	}
+	else if (type == "enemy")
+	{
+		FixtureDef.userData = "enemy";
+	}
 	Body->CreateFixture(&FixtureDef);
 
 	shipBody = Body;
 }
-
-//void Ship::Move(sf::Vector2f targetPos) {
-//	prevRotation = rotation;
-//	position = sprite.getPosition();
-//	sf::Vector2f mousePos = (sf::Vector2f)sf::Mouse::getPosition(window);
-//	sf::Vector2f wantedVector = mousePos - position;
-//
-//	float angleBetweenTwo = atan2(mousePos.y - position.y, mousePos.x - position.x);
-//
-//	rotation = CurveAngle(rotation, angleBetweenTwo, 0.0006f);
-//
-//	//error check, rotation was crashing every so often, this is a loose fix
-//	if (isnan(rotation))
-//		rotation = prevRotation;
-//
-//	//rotation = rotation;
-//	direction = sf::Vector2f(cos(rotation), sin(rotation));
-//	normalize(direction);
-//	direction *= speed;
-//
-//	////if space is held down, will fly forwards
-//	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-//	//	position += direction;
-//
-//	sprite.setRotation(radiansToDegrees(rotation) + 90);
-//	sprite.setPosition(position);
-//}
-//
-////these are the code from the gods that fix the rotation loop around 2 pi
-//float CurveAngle(float from, float to, float step)
-//{
-//	if (step == 0)
-//		return from;
-//	if (from == to || step == 1)
-//		return to;
-//
-//	sf::Vector2f fromVector = sf::Vector2f((float)cos(from), (float)sin(from));
-//	sf::Vector2f toVector = sf::Vector2f((float)cos(to), (float)sin(to));
-//
-//	sf::Vector2f currentVector = Slerp(fromVector, toVector, step);
-//
-//	return (float)atan2(currentVector.y, currentVector.x);
-//}
-//
-//sf::Vector2f Slerp(sf::Vector2f from, sf::Vector2f to, float step)
-//{
-//	if (step == 0) return from;
-//	if (from == to || step == 1) return to;
-//
-//	double theta = acos(dotProduct(from, to));
-//	if (theta == 0) return to;
-//
-//	double sinTheta = sin(theta);
-//	return (float)(sin((1 - step) * theta) / sinTheta) * from + (float)(sin(step * theta) / sinTheta) * to;
-//}
-//
-//sf::Vector2f normalize(sf::Vector2f source)
-//{
-//	float length = sqrt((source.x * source.x) + (source.y * source.y));
-//	if (length != 0)
-//		return sf::Vector2f(source.x / length, source.y / length);
-//	else
-//		return source;
-//}
-//
-//float degreeToRadian(float angle)
-//{
-//	float pi = 3.14159265358979323846;
-//	return  pi * angle / 180.0;
-//}
-//
-//float radiansToDegrees(float angle)
-//{
-//	float pi = 3.14159265358979323846;
-//	return angle * (180.0 / pi);
-//}
-//
-//float dotProduct(sf::Vector2f v1, sf::Vector2f v2)
-//{
-//	v1 = normalize(v1);
-//	v2 = normalize(v2);
-//	return (v1.x * v2.x) + (v1.y * v2.y);
-//}
 
 

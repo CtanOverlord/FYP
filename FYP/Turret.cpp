@@ -1,7 +1,7 @@
 #include "Turret.h"
 #include "Ship.h"
 
-Turret::Turret(sf::Vector2f p, Ship& s, ProjectileManager & projManager, AnimationManager& a)
+Turret::Turret(sf::Vector2f p, Ship& s, string t, ProjectileManager & projManager, AnimationManager& a)
 {
 	if (!turretTexture.loadFromFile("Turret.png"))
 	{
@@ -21,6 +21,8 @@ Turret::Turret(sf::Vector2f p, Ship& s, ProjectileManager & projManager, Animati
 	turretSprite.setOrigin(sf::Vector2f(45, 45));
 
 	ship = &s;
+
+	type = t;
 
 	projMan = & projManager;
 
@@ -101,56 +103,63 @@ void Turret::Update()
 		firePoints.at(i) = sf::Vector2f(xnew1 + turretSprite.getPosition().x, ynew1 + turretSprite.getPosition().y);
 	}
 
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	if (type == "player")
 	{
-		if (fireTimer < 60 && fireTimer > 45)
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
-			if (fireOnce1 == false)
+			if (fireTimer < 60 && fireTimer > 45)
 			{
-				projMan->CreateProjectile(firePoints.at(0), turretSprite.getPosition(), turretSprite.getRotation());
-				aniMan->CreateAnimation(firePoints.at(0), 2, turretSprite.getRotation() + 90);
-				fireOnce1 = true;
+				if (fireOnce1 == false)
+				{
+					projMan->CreateProjectile(firePoints.at(0), turretSprite.getPosition(), turretSprite.getRotation());
+					aniMan->CreateAnimation(firePoints.at(0), 2, turretSprite.getRotation() + 90);
+					fireOnce1 = true;
+				}
+			}
+			if (fireTimer < 45 && fireTimer > 30)
+			{
+				if (fireOnce2 == false)
+				{
+					projMan->CreateProjectile(firePoints.at(1), turretSprite.getPosition(), turretSprite.getRotation());
+					aniMan->CreateAnimation(firePoints.at(1), 2, turretSprite.getRotation() + 90);
+					fireOnce2 = true;
+				}
+			}
+			if (fireTimer < 30 && fireTimer > 15)
+			{
+				if (fireOnce3 == false)
+				{
+					projMan->CreateProjectile(firePoints.at(2), turretSprite.getPosition(), turretSprite.getRotation());
+					aniMan->CreateAnimation(firePoints.at(2), 2, turretSprite.getRotation() + 90);
+					fireOnce3 = true;
+				}
+			}
+			if (fireTimer < 15 && fireTimer > 0)
+			{
+				if (fireOnce4 == false)
+				{
+					projMan->CreateProjectile(firePoints.at(3), turretSprite.getPosition(), turretSprite.getRotation());
+					aniMan->CreateAnimation(firePoints.at(3), 2, turretSprite.getRotation() + 90);
+					fireOnce4 = true;
+				}
+				//for (int i = 0; i < firePoints.size(); i++)
+				//{
+				//	projMan->CreateProjectile(firePoints.at(i), turretSprite.getPosition(), turretSprite.getRotation());
+				//}
+			}
+			if (fireTimer < 0)
+			{
+				fireTimer = 60;
+				fireOnce1 = false;
+				fireOnce2 = false;
+				fireOnce3 = false;
+				fireOnce4 = false;
 			}
 		}
-		if (fireTimer < 45 && fireTimer > 30)
-		{
-			if (fireOnce2 == false)
-			{
-				projMan->CreateProjectile(firePoints.at(1), turretSprite.getPosition(), turretSprite.getRotation());
-				aniMan->CreateAnimation(firePoints.at(1), 2, turretSprite.getRotation() + 90);
-				fireOnce2 = true;
-			}
-		}
-		if (fireTimer < 30 && fireTimer > 15)
-		{
-			if (fireOnce3 == false)
-			{
-				projMan->CreateProjectile(firePoints.at(2), turretSprite.getPosition(), turretSprite.getRotation());
-				aniMan->CreateAnimation(firePoints.at(2), 2, turretSprite.getRotation() + 90);
-				fireOnce3 = true;
-			}
-		}
-		if (fireTimer < 15 && fireTimer > 0)
-		{
-			if (fireOnce4 == false)
-			{
-				projMan->CreateProjectile(firePoints.at(3), turretSprite.getPosition(), turretSprite.getRotation());
-				aniMan->CreateAnimation(firePoints.at(3), 2, turretSprite.getRotation() + 90);
-				fireOnce4 = true;
-			}
-			//for (int i = 0; i < firePoints.size(); i++)
-			//{
-			//	projMan->CreateProjectile(firePoints.at(i), turretSprite.getPosition(), turretSprite.getRotation());
-			//}
-		}
-		if (fireTimer < 0)
-		{
-			fireTimer = 60;
-			fireOnce1 = false;
-			fireOnce2 = false;
-			fireOnce3 = false;
-			fireOnce4 = false;
-		}
+	}
+	else if (type == "enemy")
+	{
+
 	}
 	fireTimer--;
 }
@@ -164,7 +173,15 @@ void Turret::Draw(sf::RenderWindow & window)
 void Turret::Move(sf::RenderWindow & window) {
 	prevRotation = rotation;
 	position2 = turretSprite.getPosition();
-	sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+	sf::Vector2i mousePos;
+	if (type == "player")
+	{
+		mousePos = sf::Mouse::getPosition(window);
+	}
+	else if (type == "enemy")
+	{
+		mousePos = sf::Vector2i(0, -1000);
+	}
 	sf::Vector2f worldMousePos = window.mapPixelToCoords(mousePos);
 	sf::Vector2f wantedVector = worldMousePos - position2;
 

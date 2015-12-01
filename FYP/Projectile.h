@@ -49,6 +49,7 @@ public:
 	void CreateBody();
 	sf::Sprite getSprite();
 	float getTTL();
+	void setTTL(float);
 	b2Body* getBody();
 };
 

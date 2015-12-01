@@ -51,9 +51,10 @@ private:
 	bool fireOnce2 = false;
 	bool fireOnce3 = false;
 	bool fireOnce4 = false;
+	string type;
 
 public:
-	Turret(sf::Vector2f position, Ship & ship, ProjectileManager & projManager, AnimationManager& aniMan);
+	Turret(sf::Vector2f position, Ship & ship, string type, ProjectileManager & projManager, AnimationManager& aniMan);
 	void Update();
 	void Draw(sf::RenderWindow & window);
 	float to_positive_angle(float angle);

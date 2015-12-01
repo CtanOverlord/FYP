@@ -21,6 +21,11 @@
 
 #include <Turret.h>
 #include <ProjectileManager.h>
+#include <Thruster.h>
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 using namespace std;
 
@@ -47,16 +52,25 @@ private:
 	vector<Turret*> turrets;
 	AnimationManager* aniMan;
 	sf::Vector2f boosterPoint;
+	vector<Thruster*> thrusters;
+	string type;
+	int destructionTimer;
+	int delayTimer;
+	int delay;
 
 public:
 
-	Ship(b2World& World, ProjectileManager & projManager, AnimationManager& aniMan);
+	Ship(b2World& World, sf::Vector2f position, string type, ProjectileManager & projManager, AnimationManager& aniMan);
 	void Update();
 	void Draw(sf::RenderWindow & window);
 	float to_positive_angle(float angle);
 	void Move(sf::Vector2f targetPos);
 	void CreateBody();
 	sf::Sprite getSprite();
+	void setHealth(float);
+	float getHealth();
+	b2Body* getBody();
+	bool destroyed;
 };
 
 #endif

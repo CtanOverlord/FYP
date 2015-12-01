@@ -74,6 +74,11 @@ float Projectile::getTTL()
 	return ttl;
 }
 
+void Projectile::setTTL(float t)
+{
+	ttl = t;
+}
+
 b2Body* Projectile::getBody()
 {
 	return projBody;
@@ -96,7 +101,7 @@ void Projectile::CreateBody()
 	FixtureDef.density = 1.0f;
 	FixtureDef.friction = 0.0f;
 	FixtureDef.shape = &Shape;
-	FixtureDef.userData = "Projectile";
+	FixtureDef.userData = "projectile";
 	FixtureDef.isSensor = true;
 	Body->CreateFixture(&FixtureDef);
 	
