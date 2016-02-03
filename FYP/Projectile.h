@@ -32,7 +32,10 @@ private:
 	sf::Sprite projSprite;
 	sf::Vector2f velocity;
 	sf::Vector2f velocity2;
+	sf::Vector2f direction;
+	sf::Vector2f position2;
 	sf::Texture projTexture;
+	sf::Vector2f target;
 	float speed;
 	b2Body* projBody;
 	b2World* world;
@@ -40,10 +43,13 @@ private:
 	float angle;
 	bool onlyOnce = false;
 	float ttl;
+	float vel;
+	float rotation;
+	float prevRotation;
 
 public:
 	
-	Projectile(b2World& World, sf::Vector2f position, sf::Vector2f pos2, float angle);
+	Projectile(b2World& World, sf::Vector2f position, sf::Vector2f pos2, float angle, string);
 	void Update();
 	void Draw(sf::RenderWindow & window);
 	void CreateBody();
@@ -51,6 +57,14 @@ public:
 	float getTTL();
 	void setTTL(float);
 	b2Body* getBody();
+	string type;
+	void Move();
+	float CurveAngle(float from, float to, float step);
+	sf::Vector2f Slerp(sf::Vector2f from, sf::Vector2f to, float step);
+	sf::Vector2f normalize(sf::Vector2f source);
+	float degreeToRadian(float angle);
+	float radiansToDegrees(float angle);
+	float dotProduct(sf::Vector2f v1, sf::Vector2f v2);
 };
 
 #endif

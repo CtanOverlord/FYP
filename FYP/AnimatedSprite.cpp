@@ -24,7 +24,7 @@
 #include "AnimatedSprite.hpp"
 
 AnimatedSprite::AnimatedSprite(sf::Time frameTime, bool paused, bool looped) :
-    m_animation(NULL), m_frameTime(frameTime), m_currentFrame(0), m_isPaused(paused), m_isLooped(looped), m_texture(NULL)
+    m_animation(NULL), m_frameTime(frameTime), m_currentFrame(0), m_isPaused(paused), m_isLooped(looped), m_texture(NULL), trans(255)
 {
 
 }
@@ -40,6 +40,26 @@ void AnimatedSprite::setAnimation(const Animation& animation)
 void AnimatedSprite::setFrameTime(sf::Time time)
 {
     m_frameTime = time;
+}
+
+void AnimatedSprite::setName(std::string n)
+{
+	name = n;
+}
+
+std::string AnimatedSprite::getName()
+{
+	return name;
+}
+
+void AnimatedSprite::setTrans(float t)
+{
+	trans = t;
+}
+
+float AnimatedSprite::getTrans()
+{
+	return trans;
 }
 
 void AnimatedSprite::play()

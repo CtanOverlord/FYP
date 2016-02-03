@@ -3,12 +3,22 @@
 
 static const float SCALE = 30.f;
 
-Ship::Ship(b2World& World, sf::Vector2f position, string t, ProjectileManager & projManager, AnimationManager& a)
+Ship::Ship(b2World& World, sf::Vector2f position, string t, sf::RenderWindow & window)
 {
-	if (!shipTexture.loadFromFile("Ship.png"))
+	if (!shipTexture.loadFromFile("Ship3.png"))
 	{
 		// error...
 	}
+
+	missileStep = 0;
+
+	fireCount = 7;
+
+	missileFiring = false;
+
+	shield = false;
+
+	Window = &window;
 
 	destructionTimer = 240;
 
@@ -16,7 +26,11 @@ Ship::Ship(b2World& World, sf::Vector2f position, string t, ProjectileManager & 
 
 	delay = 19; // or 17
 
-	health = 1;
+	health = 1000;
+
+	soundTimer = 0;
+
+	onlyOnce = false;
 
 	shipTexture.setSmooth(true);
 
@@ -29,6 +43,23 @@ Ship::Ship(b2World& World, sf::Vector2f position, string t, ProjectileManager & 
 	shipSprite.setOrigin(sf::Vector2f(200, 300));
 
 	destroyed = false;
+
+	if (!bayTexture.loadFromFile("bayLights.png"))
+	{
+		// error...
+	}
+	
+	bayTexture.setSmooth(true);
+
+	baySprite.setTexture(bayTexture);
+
+	baySprite.setScale(sf::Vector2f(0.5f, 0.5f));
+
+	baySprite.setPosition(sf::Vector2f(position.x, position.y));
+
+	baySprite.setOrigin(sf::Vector2f(200, 300));
+
+	baySprite.setColor(sf::Color(255, 255, 255, 0));
 
 	if (!boosterTexture.loadFromFile("Boosters4.png"))
 	{
@@ -49,24 +80,87 @@ Ship::Ship(b2World& World, sf::Vector2f position, string t, ProjectileManager & 
 
 	boosterPoint = sf::Vector2f(100, 290);
 
+	if (!shieldTexture.loadFromFile("shipShield4.png"))
+	{
+		// error...
+	}
+
+	shieldTexture.setSmooth(true);
+
+	shieldSprite.setTexture(shieldTexture);
+
+	shieldSprite.setScale(sf::Vector2f(0.55f, 0.55f));
+
+	//shieldSprite.setScale(sf::Vector2f(0.5f, 0.5f));
+
+	shieldSprite.setPosition(sf::Vector2f(100, 290));
+
+	shieldSprite.setOrigin(sf::Vector2f(shieldSprite.getTextureRect().width / 2, (shieldSprite.getTextureRect().height / 2) - 25));
+
+	shieldSprite.setColor(sf::Color(255, 255, 255, 0));
+
 	velocity = sf::Vector2f(0, 0);
 
 	world = &World;
-
-	projMan = & projManager;
-
-	aniMan = &a;
 
 	speed = 0.010f;
 
 	CreateBody();
 
-	turrets.push_back(new Turret(sf::Vector2f(75, 80), *this, type, *projMan, *aniMan));
-	turrets.push_back(new Turret(sf::Vector2f(124, 80), *this, type, *projMan, *aniMan));
-	turrets.push_back(new Turret(sf::Vector2f(75, 127), *this, type, *projMan, *aniMan));
-	turrets.push_back(new Turret(sf::Vector2f(124, 127), *this, type, *projMan, *aniMan));
-	turrets.push_back(new Turret(sf::Vector2f(75, 175), *this, type, *projMan, *aniMan));
-	turrets.push_back(new Turret(sf::Vector2f(124, 175), *this, type, *projMan, *aniMan));
+	// left
+	missilePoints.push_back(new sf::Vector2f(31 / 2, 150 / 2));
+	missilePoints.push_back(new sf::Vector2f(31 / 2, 203 / 2));
+	missilePoints.push_back(new sf::Vector2f(31 / 2, 256 / 2));
+	missilePoints.push_back(new sf::Vector2f(31 / 2, 309 / 2));
+	missilePoints.push_back(new sf::Vector2f(31 / 2, 362 / 2));
+	missilePoints.push_back(new sf::Vector2f(31 / 2, 415 / 2));
+	missilePoints.push_back(new sf::Vector2f(31 / 2, 468 / 2));
+	missilePoints.push_back(new sf::Vector2f(31 / 2, 521 / 2));
+	// right
+	missilePoints.push_back(new sf::Vector2f(368 / 2, 150 / 2));
+	missilePoints.push_back(new sf::Vector2f(368 / 2, 203 / 2));
+	missilePoints.push_back(new sf::Vector2f(368 / 2, 256 / 2));
+	missilePoints.push_back(new sf::Vector2f(368 / 2, 309 / 2));
+	missilePoints.push_back(new sf::Vector2f(368 / 2, 362 / 2));
+	missilePoints.push_back(new sf::Vector2f(368 / 2, 415 / 2));
+	missilePoints.push_back(new sf::Vector2f(368 / 2, 468 / 2));
+	missilePoints.push_back(new sf::Vector2f(368 / 2, 521 / 2));
+
+	// left
+	missilePointOrig.push_back(new sf::Vector2f(31 / 2, 150 / 2));
+	missilePointOrig.push_back(new sf::Vector2f(31 / 2, 203 / 2));
+	missilePointOrig.push_back(new sf::Vector2f(31 / 2, 256 / 2));
+	missilePointOrig.push_back(new sf::Vector2f(31 / 2, 309 / 2));
+	missilePointOrig.push_back(new sf::Vector2f(31 / 2, 362 / 2));
+	missilePointOrig.push_back(new sf::Vector2f(31 / 2, 415 / 2));
+	missilePointOrig.push_back(new sf::Vector2f(31 / 2, 468 / 2));
+	missilePointOrig.push_back(new sf::Vector2f(31 / 2, 521 / 2));
+	// right
+	missilePointOrig.push_back(new sf::Vector2f(368 / 2, 150 / 2));
+	missilePointOrig.push_back(new sf::Vector2f(368 / 2, 203 / 2));
+	missilePointOrig.push_back(new sf::Vector2f(368 / 2, 256 / 2));
+	missilePointOrig.push_back(new sf::Vector2f(368 / 2, 309 / 2));
+	missilePointOrig.push_back(new sf::Vector2f(368 / 2, 362 / 2));
+	missilePointOrig.push_back(new sf::Vector2f(368 / 2, 415 / 2));
+	missilePointOrig.push_back(new sf::Vector2f(368 / 2, 468 / 2));
+	missilePointOrig.push_back(new sf::Vector2f(368 / 2, 521 / 2));
+
+	wreckPoint.push_back(new sf::Vector2f(51, 91));
+	wreckPoint.push_back(new sf::Vector2f(55, 229));
+	wreckPoint.push_back(new sf::Vector2f(148, 91));
+	wreckPoint.push_back(new sf::Vector2f(145, 223));
+
+	wreckPointOrig.push_back(new sf::Vector2f(51, 91));
+	wreckPointOrig.push_back(new sf::Vector2f(55, 229));
+	wreckPointOrig.push_back(new sf::Vector2f(148, 91));
+	wreckPointOrig.push_back(new sf::Vector2f(145, 223));
+
+	turrets.push_back(new Turret(sf::Vector2f(75, 80), *this, type, *Window));
+	turrets.push_back(new Turret(sf::Vector2f(124, 80), *this, type, *Window));
+	turrets.push_back(new Turret(sf::Vector2f(75, 127), *this, type, *Window));
+	turrets.push_back(new Turret(sf::Vector2f(124, 127), *this, type, *Window));
+	turrets.push_back(new Turret(sf::Vector2f(75, 175), *this, type, *Window));
+	turrets.push_back(new Turret(sf::Vector2f(124, 175), *this, type, *Window));
 
 	thrusters.push_back(new Thruster(sf::Vector2f(70, 4), 0, false, "front"));
 	thrusters.push_back(new Thruster(sf::Vector2f(75, 4), 0, false, "front"));
@@ -118,53 +212,15 @@ Ship::Ship(b2World& World, sf::Vector2f position, string t, ProjectileManager & 
 
 void Ship::Update()
 {
-	boosterSprite.setPosition((shipSprite.getPosition().x - shipSprite.getTextureRect().width / 4) + boosterPoint.x, (shipSprite.getPosition().y - shipSprite.getTextureRect().height / 4) + boosterPoint.y);
+	shieldSprite.setPosition(shipSprite.getPosition());
+	
+	shieldSprite.setRotation(shipSprite.getRotation());
+	
+	baySprite.setPosition(shipSprite.getPosition());
+	
+	baySprite.setRotation(shipSprite.getRotation());
 
-	float s = sin(shipSprite.getRotation() * 0.0174532925);
-	float c = cos(shipSprite.getRotation() * 0.0174532925);
-
-	// translate point back to origin:
-	boosterSprite.setPosition(boosterSprite.getPosition().x - shipSprite.getPosition().x, boosterSprite.getPosition().y - shipSprite.getPosition().y);
-
-	// rotate point
-	float xnew = boosterSprite.getPosition().x * c - boosterSprite.getPosition().y * s;
-	float ynew = boosterSprite.getPosition().x * s + boosterSprite.getPosition().y * c;
-
-	// translate point back:
-	boosterSprite.setPosition(xnew + shipSprite.getPosition().x, ynew + shipSprite.getPosition().y);
-
-	boosterSprite.setRotation(shipSprite.getRotation());
-
-	for (int i = 0; i < thrusters.size(); i++)
-	{
-		thrusters.at(i)->turretSprite.setPosition(((shipSprite.getPosition().x - shipSprite.getTextureRect().width / 4) + thrusters.at(i)->position.x), ((shipSprite.getPosition().y - shipSprite.getTextureRect().height / 4) + thrusters.at(i)->position.y));
-		//thrusters.at(i).y = ((shipSprite.getPosition().y - shipSprite.getTextureRect().height / 4) + thrusters.at(i)->position.y);
-
-		float s1 = sin(shipSprite.getRotation() * 0.0174532925);
-		float c1 = cos(shipSprite.getRotation() * 0.0174532925);
-
-		// translate point back to origin:
-		thrusters.at(i)->turretSprite.setPosition(sf::Vector2f(thrusters.at(i)->turretSprite.getPosition().x - shipSprite.getPosition().x, thrusters.at(i)->turretSprite.getPosition().y - shipSprite.getPosition().y));
-		// rotate point
-		float xnew1 = thrusters.at(i)->turretSprite.getPosition().x * c1 - thrusters.at(i)->turretSprite.getPosition().y * s1;
-		float ynew1 = thrusters.at(i)->turretSprite.getPosition().x * s1 + thrusters.at(i)->turretSprite.getPosition().y * c1;
-
-		// translate point back:
-		thrusters.at(i)->turretSprite.setPosition(sf::Vector2f(xnew1 + shipSprite.getPosition().x, ynew1 + shipSprite.getPosition().y));
-
-		if (thrusters.at(i)->ori == "front")
-		{
-			thrusters.at(i)->turretSprite.setRotation(shipSprite.getRotation());
-		}
-		else if (thrusters.at(i)->ori == "topleft" || thrusters.at(i)->ori == "botleft")
-		{
-			thrusters.at(i)->turretSprite.setRotation(shipSprite.getRotation() - 90);
-		}
-		else if (thrusters.at(i)->ori == "topright" || thrusters.at(i)->ori == "botright")
-		{
-			thrusters.at(i)->turretSprite.setRotation(shipSprite.getRotation() + 90);
-		}
-	}
+	updateBoosterPoints();
 
 	for (int i = 0; i < thrusters.size(); i++)
 	{
@@ -173,8 +229,32 @@ void Ship::Update()
 
 	if (type == "player" && health > 0)
 	{
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+		{
+			if (shieldTimer < 0 && shieldDuration < 0)
+			{
+				shield = true;
+				shieldDuration = 600;
+				shieldTimer = 480;
+				SoundManager::GetInstance()->ShieldsOn();
+			}
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+		{
+			if (missileTimer < 0 && missileFiring == false)
+			{
+				missileFiring = true;
+
+				sf::Vector2i mousePos;
+				mousePos = sf::Mouse::getPosition(*Window);
+
+				worldMousePos = Window->mapPixelToCoords(mousePos);
+			}
+		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		{
+			updateThrusterPoints();
 			shipBody->ApplyAngularImpulse(-5, false);
 			//shipSprite.setRotation(shipSprite.getRotation() - 0.002);
 			for (int i = 0; i < thrusters.size(); i++)
@@ -187,6 +267,7 @@ void Ship::Update()
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		{
+			updateThrusterPoints();
 			shipBody->ApplyAngularImpulse(5, false);
 			//shipSprite.setRotation(shipSprite.getRotation() + 0.002);
 			for (int i = 0; i < thrusters.size(); i++)
@@ -199,7 +280,8 @@ void Ship::Update()
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 		{
-			shipBody->ApplyLinearImpulse(b2Vec2(velocity2.x, velocity2.y), shipBody->GetWorldCenter(), false);
+			updateThrusterPoints();
+			shipBody->ApplyLinearImpulse(b2Vec2(velocity2.x / 2, velocity2.y / 2), shipBody->GetWorldCenter(), false);
 			for (int i = 0; i < thrusters.size(); i++)
 			{
 				if (thrusters.at(i)->ori == "topleft" || thrusters.at(i)->ori == "botleft")
@@ -210,7 +292,8 @@ void Ship::Update()
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 		{
-			shipBody->ApplyLinearImpulse(b2Vec2(-velocity2.x, -velocity2.y), shipBody->GetWorldCenter(), false);
+			updateThrusterPoints();
+			shipBody->ApplyLinearImpulse(b2Vec2(-velocity2.x / 2, -velocity2.y / 2), shipBody->GetWorldCenter(), false);
 			for (int i = 0; i < thrusters.size(); i++)
 			{
 				if (thrusters.at(i)->ori == "topright" || thrusters.at(i)->ori == "botright")
@@ -221,7 +304,8 @@ void Ship::Update()
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 		{
-			shipBody->ApplyLinearImpulse(b2Vec2(velocity.x, velocity.y), shipBody->GetWorldCenter(), false);
+			updateThrusterPoints();
+			shipBody->ApplyLinearImpulse(b2Vec2(velocity.x / 2, velocity.y / 2), shipBody->GetWorldCenter(), false);
 			for (int i = 0; i < thrusters.size(); i++)
 			{
 				if (thrusters.at(i)->ori == "front")
@@ -258,6 +342,11 @@ void Ship::Update()
 	}
 	else if (type == "enemy" && health < 0)
 	{
+		if (onlyOnce == false)
+		{
+			SoundManager::GetInstance()->CreateSound(shipSprite.getPosition(), 4);
+			onlyOnce = true;
+		}
 		destructionTimer--;
 		if (destructionTimer > 0)
 		{
@@ -287,7 +376,15 @@ void Ship::Update()
 					tempY = shipSprite.getPosition().y - rand() % 100 + 1;
 				}
 
-				aniMan->CreateAnimation(sf::Vector2f(tempX, tempY), 4, 0);
+				AnimationManager::GetInstance()->CreateAnimation(sf::Vector2f(tempX, tempY), 4, 0);
+
+				if (soundTimer == 2)
+				{
+					SoundManager::GetInstance()->CreateSound(sf::Vector2f(tempX, tempY), 3);
+					soundTimer = 0;
+				}
+
+				soundTimer++;
 
 				delay--;
 
@@ -299,8 +396,11 @@ void Ship::Update()
 		else
 		{
 			destroyed = true;
+			updateWreckPoints();
 		}
 	}
+
+	//missileTimer--;
 
 	//speed = sqrt((shipBody->GetLinearVelocity().x * shipBody->GetLinearVelocity().x) + (shipBody->GetLinearVelocity().y * shipBody->GetLinearVelocity().y));
 
@@ -320,22 +420,116 @@ void Ship::Update()
 	{
 		turrets.at(i)->Update();
 	}
+	for (int i = 0; i < thrusters.size(); i++)
+	{
+		thrusters.at(i)->Update();
+	}
 
+	if (shield == true)
+	{
+		shieldDuration--;
+
+		if (shieldSprite.getColor().a < 255)
+		{
+			shieldSprite.setColor(sf::Color(255, 255, 255, shieldSprite.getColor().a + 1));
+		}
+		if (shieldDuration < 0)
+		{
+			shieldTimer = 480;
+			shield = false;
+			SoundManager::GetInstance()->ShieldsOff();
+		}
+	}
+	else if (shield == false)
+	{
+		shieldTimer--;
+		if (shieldSprite.getColor().a > 2)
+		{
+			shieldSprite.setColor(sf::Color(255, 255, 255, shieldSprite.getColor().a - 2));
+		}
+	}
+
+	if (missileFiring == true)
+	{
+		if (baySprite.getColor().a < 255)
+		{
+			float trans = baySprite.getColor().a + 10;
+			if (trans > 255)
+			{
+				trans = 255;
+			}
+			baySprite.setColor(sf::Color(255, 255, 255, trans));
+		}
+	}
+	else if (missileFiring == false)
+	{
+		float trans = baySprite.getColor().a - 10;
+		if (trans < 0)
+		{
+			trans = 0;
+		}
+		baySprite.setColor(sf::Color(255, 255, 255, trans));
+	}
+
+	if (missileFiring == true)
+	{
+		if (fireCount > -1)
+		{
+			if (missileStep == 10)
+			{
+				updateMissilePoints();
+
+				ProjectileManager::GetInstance()->CreateMissile(*missilePoints.at(fireCount), worldMousePos, shipSprite.getRotation() - 90);
+
+				ProjectileManager::GetInstance()->CreateMissile(*missilePoints.at(fireCount + 8), worldMousePos, shipSprite.getRotation() + 90);
+
+				SoundManager::GetInstance()->CreateSound(*missilePoints.at(fireCount + 8), 1);
+
+				fireCount--;
+
+				missileStep = 0;
+			}
+		}
+		else if (fireCount > -41)
+		{
+			fireCount--;
+		}
+
+
+		missileStep++;
+
+		if (fireCount == -40)
+		{
+			missileTimer = 480;
+			missileFiring = false;
+			fireCount = 7;
+			missileStep = 0;
+		}
+	}
+	else
+	{
+		missileTimer--;
+	}
 }
 
 void Ship::Draw(sf::RenderWindow & window)
 {
+	for (int i = 0; i < thrusters.size(); i++)
+	{
+		thrusters.at(i)->Draw(window);
+	}
+	
 	window.draw(boosterSprite);
 	window.draw(shipSprite);
+
+	window.draw(baySprite);
+
 	for (int i = 0; i < turrets.size(); i++)
 	{
 		turrets.at(i)->Draw(window);
 	}
-	for (int i = 0; i < thrusters.size(); i++)
-	{
-		thrusters.at(i)->Update();
-		thrusters.at(i)->Draw(window);
-	}
+	
+	window.draw(shieldSprite);
 }
 
 float Ship::to_positive_angle(float angle)
@@ -383,22 +577,151 @@ void Ship::CreateBody()
 
 	b2PolygonShape Shape;
 	Shape.SetAsBox(((shipSprite.getTextureRect().width * shipSprite.getScale().x) / 2) / SCALE, ((shipSprite.getTextureRect().height * shipSprite.getScale().x) / 2) / SCALE);
-	Shape.SetAsBox((200 / 2) / SCALE, (300 / 2) / SCALE);
+	Shape.SetAsBox((185 / 2) / SCALE, (292 / 2) / SCALE);
 	b2FixtureDef FixtureDef;
 	FixtureDef.density = 1.0f;
 	FixtureDef.friction = 0.7f;
 	FixtureDef.shape = &Shape;
+
 	if (type == "player")
 	{
+		FixtureDef.filter.categoryBits = 0x0001;
+		FixtureDef.filter.maskBits = 0x0010 | 0x0002 | 0x0004 | 0x0008;
 		FixtureDef.userData = "player";
 	}
 	else if (type == "enemy")
 	{
+		FixtureDef.filter.categoryBits = 0x0002;
+		FixtureDef.filter.maskBits = 0x0010 | 0x0001 | 0x0004 | 0x0008;
 		FixtureDef.userData = "enemy";
 	}
 	Body->CreateFixture(&FixtureDef);
 
 	shipBody = Body;
+}
+
+void Ship::updateMissilePoints()
+{
+	for (int i = 0; i < missilePoints.size(); i++)
+	{
+		missilePoints.at(i) = new sf::Vector2f(((shipSprite.getPosition().x - shipSprite.getTextureRect().width / 4) + missilePointOrig.at(i)->x), ((shipSprite.getPosition().y - shipSprite.getTextureRect().height / 4) + missilePointOrig.at(i)->y));
+		//thrusters.at(i).y = ((shipSprite.getPosition().y - shipSprite.getTextureRect().height / 4) + thrusters.at(i)->position.y);
+
+		float s1 = sin(shipSprite.getRotation() * 0.0174532925);
+		float c1 = cos(shipSprite.getRotation() * 0.0174532925);
+
+		// translate point back to origin:
+		missilePoints.at(i) = new sf::Vector2f(missilePoints.at(i)->x - shipSprite.getPosition().x, missilePoints.at(i)->y - shipSprite.getPosition().y);
+		// rotate point
+		float xnew1 = missilePoints.at(i)->x * c1 - missilePoints.at(i)->y * s1;
+		float ynew1 = missilePoints.at(i)->x * s1 + missilePoints.at(i)->y * c1;
+
+		// translate point back:
+		missilePoints.at(i) = new sf::Vector2f(xnew1 + shipSprite.getPosition().x, ynew1 + shipSprite.getPosition().y);
+	}
+}
+
+void Ship::updateThrusterPoints()
+{
+	for (int i = 0; i < thrusters.size(); i++)
+	{
+		thrusters.at(i)->turretSprite.setPosition(((shipSprite.getPosition().x - shipSprite.getTextureRect().width / 4) + thrusters.at(i)->position.x), ((shipSprite.getPosition().y - shipSprite.getTextureRect().height / 4) + thrusters.at(i)->position.y));
+		//thrusters.at(i).y = ((shipSprite.getPosition().y - shipSprite.getTextureRect().height / 4) + thrusters.at(i)->position.y);
+
+		float s1 = sin(shipSprite.getRotation() * 0.0174532925);
+		float c1 = cos(shipSprite.getRotation() * 0.0174532925);
+
+		// translate point back to origin:
+		thrusters.at(i)->turretSprite.setPosition(sf::Vector2f(thrusters.at(i)->turretSprite.getPosition().x - shipSprite.getPosition().x, thrusters.at(i)->turretSprite.getPosition().y - shipSprite.getPosition().y));
+		// rotate point
+		float xnew1 = thrusters.at(i)->turretSprite.getPosition().x * c1 - thrusters.at(i)->turretSprite.getPosition().y * s1;
+		float ynew1 = thrusters.at(i)->turretSprite.getPosition().x * s1 + thrusters.at(i)->turretSprite.getPosition().y * c1;
+
+		// translate point back:
+		thrusters.at(i)->turretSprite.setPosition(sf::Vector2f(xnew1 + shipSprite.getPosition().x, ynew1 + shipSprite.getPosition().y));
+
+		if (thrusters.at(i)->ori == "front")
+		{
+			thrusters.at(i)->turretSprite.setRotation(shipSprite.getRotation());
+		}
+		else if (thrusters.at(i)->ori == "topleft" || thrusters.at(i)->ori == "botleft")
+		{
+			thrusters.at(i)->turretSprite.setRotation(shipSprite.getRotation() - 90);
+		}
+		else if (thrusters.at(i)->ori == "topright" || thrusters.at(i)->ori == "botright")
+		{
+			thrusters.at(i)->turretSprite.setRotation(shipSprite.getRotation() + 90);
+		}
+	}
+}
+
+void Ship::updateWreckPoints()
+{
+	for (int i = 0; i < wreckPoint.size(); i++)
+	{
+		wreckPoint.at(i) = new sf::Vector2f(((shipSprite.getPosition().x - shipSprite.getTextureRect().width / 4) + wreckPointOrig.at(i)->x), ((shipSprite.getPosition().y - shipSprite.getTextureRect().height / 4) + wreckPointOrig.at(i)->y));
+		//thrusters.at(i).y = ((shipSprite.getPosition().y - shipSprite.getTextureRect().height / 4) + thrusters.at(i)->position.y);
+
+		float s1 = sin(shipSprite.getRotation() * 0.0174532925);
+		float c1 = cos(shipSprite.getRotation() * 0.0174532925);
+
+		// translate point back to origin:
+		wreckPoint.at(i) = new sf::Vector2f(wreckPoint.at(i)->x - shipSprite.getPosition().x, wreckPoint.at(i)->y - shipSprite.getPosition().y);
+		// rotate point
+		float xnew1 = wreckPoint.at(i)->x * c1 - wreckPoint.at(i)->y * s1;
+		float ynew1 = wreckPoint.at(i)->x * s1 + wreckPoint.at(i)->y * c1;
+
+		// translate point back:
+		wreckPoint.at(i) = new sf::Vector2f(xnew1 + shipSprite.getPosition().x, ynew1 + shipSprite.getPosition().y);
+	}
+}
+
+void Ship::updateBoosterPoints()
+{
+	boosterSprite.setPosition((shipSprite.getPosition().x - shipSprite.getTextureRect().width / 4) + boosterPoint.x, (shipSprite.getPosition().y - shipSprite.getTextureRect().height / 4) + boosterPoint.y);
+
+	float s = sin(shipSprite.getRotation() * 0.0174532925);
+	float c = cos(shipSprite.getRotation() * 0.0174532925);
+
+	// translate point back to origin:
+	boosterSprite.setPosition(boosterSprite.getPosition().x - shipSprite.getPosition().x, boosterSprite.getPosition().y - shipSprite.getPosition().y);
+
+	// rotate point
+	float xnew = boosterSprite.getPosition().x * c - boosterSprite.getPosition().y * s;
+	float ynew = boosterSprite.getPosition().x * s + boosterSprite.getPosition().y * c;
+
+	// translate point back:
+	boosterSprite.setPosition(xnew + shipSprite.getPosition().x, ynew + shipSprite.getPosition().y);
+
+	boosterSprite.setRotation(shipSprite.getRotation());
+}
+
+void Ship::DeleteAll()
+{
+	for (int i = 0; i < thrusters.size(); i++)
+	{
+		delete thrusters.at(i);
+	}
+	for (int i = 0; i < wreckPointOrig.size(); i++)
+	{
+		delete wreckPointOrig.at(i);
+	}
+	for (int i = 0; i < wreckPoint.size(); i++)
+	{
+		delete wreckPoint.at(i);
+	}
+	for (int i = 0; i < missilePoints.size(); i++)
+	{
+		delete missilePoints.at(i);
+	}
+	for (int i = 0; i < missilePointOrig.size(); i++)
+	{
+		delete missilePointOrig.at(i);
+	}
+	for (int i = 0; i < turrets.size(); i++)
+	{
+		delete turrets.at(i);
+	}
 }
 
 

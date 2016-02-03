@@ -4,6 +4,7 @@
 #include "Box2D\Box2D.h"
 #include "Ship.h"
 #include "Projectile.h"
+#include "Wreck.h"
 
 class ContactListener : public b2ContactListener {
 private:
@@ -18,9 +19,9 @@ public:
 		void* fixAType = contact->GetFixtureA()->GetUserData();
 		void* fixBType = contact->GetFixtureB()->GetUserData();
 
-		if (fixAType == "projectile" && fixBType == "enemy"
-			|| fixAType == "enemy" && fixBType == "projectile") {
-			if (fixAType == "projectile") {				
+		if (fixAType == "plasma" && fixBType == "enemy"
+			|| fixAType == "enemy" && fixBType == "plasma") {
+			if (fixAType == "plasma") {				
 				void* bodyUserData1 = contact->GetFixtureA()->GetBody()->GetUserData();
 				void* bodyUserData2 = contact->GetFixtureB()->GetBody()->GetUserData();
 
@@ -31,7 +32,7 @@ public:
 				static_cast<Projectile*>(bodyUserData1)->setTTL(0);
 				static_cast<Ship*>(bodyUserData2)->setHealth(static_cast<Ship*>(bodyUserData2)->getHealth() - 10);
 			}
-			else if (fixBType == "projectile") {
+			else if (fixBType == "plasma") {
 				void* bodyUserData1 = contact->GetFixtureB()->GetBody()->GetUserData();
 				void* bodyUserData2 = contact->GetFixtureA()->GetBody()->GetUserData();
 				//b2Vec2 posPlat = contact->GetFixtureA()->GetBody()->GetPosition();
@@ -40,6 +41,67 @@ public:
 
 				static_cast<Projectile*>(bodyUserData1)->setTTL(0);
 				static_cast<Ship*>(bodyUserData2)->setHealth(static_cast<Ship*>(bodyUserData2)->getHealth() - 10);
+			}
+		}
+
+		if (fixAType == "plasma" && fixBType == "wreck"
+			|| fixAType == "wreck" && fixBType == "plasma") {
+			if (fixAType == "plasma") {
+				void* bodyUserData1 = contact->GetFixtureA()->GetBody()->GetUserData();
+				void* bodyUserData2 = contact->GetFixtureB()->GetBody()->GetUserData();
+
+				static_cast<Projectile*>(bodyUserData1)->setTTL(0);
+				static_cast<Wreck*>(bodyUserData2)->setTTL(static_cast<Wreck*>(bodyUserData2)->getTTL() - 15);
+			}
+			else if (fixBType == "plasma") {
+				void* bodyUserData1 = contact->GetFixtureB()->GetBody()->GetUserData();
+				void* bodyUserData2 = contact->GetFixtureA()->GetBody()->GetUserData();
+
+				static_cast<Projectile*>(bodyUserData1)->setTTL(0);
+				static_cast<Wreck*>(bodyUserData2)->setTTL(static_cast<Wreck*>(bodyUserData2)->getTTL() - 15);
+			}
+		}
+
+		if (fixAType == "missile" && fixBType == "enemy"
+			|| fixAType == "enemy" && fixBType == "missile") {
+			if (fixAType == "missile") {
+				void* bodyUserData1 = contact->GetFixtureA()->GetBody()->GetUserData();
+				void* bodyUserData2 = contact->GetFixtureB()->GetBody()->GetUserData();
+
+				//b2Vec2 posPlat = contact->GetFixtureB()->GetBody()->GetPosition();
+
+				//b2Vec2 posPlayer = contact->GetFixtureA()->GetBody()->GetPosition();
+
+				static_cast<Projectile*>(bodyUserData1)->setTTL(0);
+				static_cast<Ship*>(bodyUserData2)->setHealth(static_cast<Ship*>(bodyUserData2)->getHealth() - 40);
+			}
+			else if (fixBType == "missile") {
+				void* bodyUserData1 = contact->GetFixtureB()->GetBody()->GetUserData();
+				void* bodyUserData2 = contact->GetFixtureA()->GetBody()->GetUserData();
+				//b2Vec2 posPlat = contact->GetFixtureA()->GetBody()->GetPosition();
+
+				//b2Vec2 posPlayer = contact->GetFixtureB()->GetBody()->GetPosition();
+
+				static_cast<Projectile*>(bodyUserData1)->setTTL(0);
+				static_cast<Ship*>(bodyUserData2)->setHealth(static_cast<Ship*>(bodyUserData2)->getHealth() - 40);
+			}
+		}
+
+		if (fixAType == "missile" && fixBType == "wreck"
+			|| fixAType == "wreck" && fixBType == "missile") {
+			if (fixAType == "missile") {
+				void* bodyUserData1 = contact->GetFixtureA()->GetBody()->GetUserData();
+				void* bodyUserData2 = contact->GetFixtureB()->GetBody()->GetUserData();
+
+				static_cast<Projectile*>(bodyUserData1)->setTTL(0);
+				static_cast<Wreck*>(bodyUserData2)->setTTL(static_cast<Wreck*>(bodyUserData2)->getTTL() - 100);
+			}
+			else if (fixBType == "missile") {
+				void* bodyUserData1 = contact->GetFixtureB()->GetBody()->GetUserData();
+				void* bodyUserData2 = contact->GetFixtureA()->GetBody()->GetUserData();
+
+				static_cast<Projectile*>(bodyUserData1)->setTTL(0);
+				static_cast<Wreck*>(bodyUserData2)->setTTL(static_cast<Wreck*>(bodyUserData2)->getTTL() - 100);
 			}
 		}
 

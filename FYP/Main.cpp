@@ -18,6 +18,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include <chrono>
+
 #include "Ship.h"
 #include "ProjectileManager.h"
 
@@ -31,12 +33,24 @@
 
 #include "ShipManager.h"
 
+#include "WreckManager.h"
+
+#include "UIElement.h"
+
+#include "Globals.h"
+
+#include "SoundManager.h"
+
 //doxygen
 
 static const float SCALE = 30.f;
 
-int main()	
+int main()
 {
+	std::chrono::steady_clock myClock;
+	const auto timePerTick = std::chrono::milliseconds(16);
+	auto timeOfLastTick = myClock.now();
+
 	b2Vec2 Gravity(0.f, 0);
 	b2World World(Gravity);
 
@@ -52,20 +66,17 @@ int main()
 	settings.minorVersion = 0;
 
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "FYP", sf::Style::Default, settings);
-	
-	window.setFramerateLimit(60);
-	
-	AnimationManager aniMan = AnimationManager();
-	ProjectileManager projMan = ProjectileManager(World, aniMan);
-	ShipManager shipMan = ShipManager(World, aniMan, projMan);
 
-	shipMan.CreateShip(sf::Vector2f(300, 300), "player");
+	window.setMouseCursorVisible(false);
 
-	shipMan.CreateShip(sf::Vector2f(700, 300), "enemy");
-	
-	//Ship ship = Ship(World, sf::Vector2f(300, 300), "player", projMan, aniMan);
+	ProjectileManager::GetInstance()->setWorld(World);
+	WreckManager::GetInstance()->setWorld(World);
+	ShipManager::GetInstance()->setWorld(World);
+	ShipManager::GetInstance()->setWindow(window);
 
-	//Ship ship2 = Ship(World, sf::Vector2f(700, 300), "enemy", projMan, aniMan);
+	ShipManager::GetInstance()->CreateShip(sf::Vector2f(300, 300), "player");
+
+	ShipManager::GetInstance()->CreateShip(sf::Vector2f(700, 300), "enemy");
 
 	sf::Texture background;
 
@@ -73,7 +84,7 @@ int main()
 	{
 		// error...
 	}
-	
+
 	background.setSmooth(true);
 
 	sf::Sprite backgroundSprite;
@@ -86,33 +97,66 @@ int main()
 
 	backgroundSprite.setOrigin(sf::Vector2f(1715, 1733));
 
+	sf::Texture cursor;
 
-	sf::View view(sf::FloatRect(shipMan.ships.at(0)->getSprite().getPosition().x, shipMan.ships.at(0)->getSprite().getPosition().y, 1280, 720));
+	if (!cursor.loadFromFile("Cursor2.png"))
+	{
+		// error...
+	}
 
-	view.setCenter(sf::Vector2f(shipMan.ships.at(0)->getSprite().getPosition().x, shipMan.ships.at(0)->getSprite().getPosition().y));
+	cursor.setSmooth(true);
+
+	sf::Sprite cursorSprite;
+
+	cursorSprite.setTexture(cursor);
+
+	cursorSprite.setScale(sf::Vector2f(0.35f, 0.35f));
+
+	cursorSprite.setPosition(sf::Vector2f(0, 0));
+
+	cursorSprite.setOrigin(sf::Vector2f(50, 50));
+
+	UIElement ui = UIElement(sf::Vector2f(0, 0), 0, true, 1);
+
+	UIElement uiHealth = UIElement(sf::Vector2f(-197, 310), 0, true, 2);
+
+	UIElement uiPower = UIElement(sf::Vector2f(-197, 343), 0, true, 3);
+
+	UIElement uiAbility1 = UIElement(sf::Vector2f(-148, -325), 0, true, 4);
+
+	UIElement uiAbility2 = UIElement(sf::Vector2f(-50, -324), 0, true, 5);
+
+	sf::View view(sf::FloatRect(ShipManager::GetInstance()->ships.at(0)->getSprite().getPosition().x, ShipManager::GetInstance()->ships.at(0)->getSprite().getPosition().y, 1280, 720));
+
+	view.setCenter(sf::Vector2f(ShipManager::GetInstance()->ships.at(0)->getSprite().getPosition().x, ShipManager::GetInstance()->ships.at(0)->getSprite().getPosition().y));
 
 	window.setView(view);
 
-	// create a view with its center and size
-	//sf::View view2(sf::Vector2f(350, 300), sf::Vector2f(300, 200));
+	 //create a view with its center and size
+	sf::View view2(sf::Vector2f(350, 300), sf::Vector2f(300, 200));
 
 	sf::Event event;
 
 	while (window.isOpen())
 	{
-		// get global mouse position
-		//sf::Vector2i position = sf::Mouse::getPosition();
-		// set mouse position relative to a window
-		//sf::Mouse::setPosition(sf::Vector2i(100, 200), window)
-
-		World.Step(1 / 60.f, 8, 3);
-
-		view.setCenter(sf::Vector2f(shipMan.ships.at(0)->getSprite().getPosition().x, shipMan.ships.at(0)->getSprite().getPosition().y));
-
-		window.setView(view);
-
-		while (window.pollEvent(event))
+		while (myClock.now() - timeOfLastTick >= timePerTick) 
 		{
+			timeOfLastTick = myClock.now();
+
+			World.Step(1 / 60.f, 8, 3);
+
+			view.setCenter(sf::Vector2f(ShipManager::GetInstance()->ships.at(0)->getSprite().getPosition().x, ShipManager::GetInstance()->ships.at(0)->getSprite().getPosition().y));
+
+			ui.Update();
+			uiHealth.Update();
+			uiPower.Update();
+			uiAbility1.Update();
+			uiAbility2.Update();
+
+			window.setView(view);
+
+			while (window.pollEvent(event))
+			{
 				if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
 				{
 					if (event.type == event.MouseButtonPressed || event.type == event.MouseButtonReleased)
@@ -125,6 +169,17 @@ int main()
 						if (size.x > 1280)
 						{
 							view.zoom(0.9f);
+							float tempX = view.getSize().x / 1280;
+							float tempY = view.getSize().y / 720;
+							ui.UISprite.setScale(tempX, tempY);
+							uiHealth.UISprite.setScale(tempX, tempY);
+							uiPower.UISprite.setScale(tempX, tempY);
+							uiAbility1.UISprite.setScale(tempX, tempY);
+							uiAbility2.UISprite.setScale(tempX, tempY);
+							cursorSprite.setScale(tempX / 3, tempY / 3);
+							/*ui.UISprite.setScale(sf::Vector2f(ui.UISprite.getScale().x * 0.9, ui.UISprite.getScale().y * 0.9));
+							uiHealth.UISprite.setScale(sf::Vector2f(uiHealth.UISprite.getScale().x * 0.9, uiHealth.UISprite.getScale().y * 0.9));
+							uiPower.UISprite.setScale(sf::Vector2f(uiPower.UISprite.getScale().x * 0.9, uiPower.UISprite.getScale().y * 0.9));*/
 						}
 					}
 					else if (event.mouseWheelScroll.delta < 0)
@@ -133,20 +188,50 @@ int main()
 						if (size.x < 2560)
 						{
 							view.zoom(1.1f);
+							float tempX = view.getSize().x / 1280;
+							float tempY = view.getSize().y / 720;
+							ui.UISprite.setScale(tempX, tempY);
+							uiHealth.UISprite.setScale(tempX, tempY);
+							uiPower.UISprite.setScale(tempX, tempY);
+							uiAbility1.UISprite.setScale(tempX, tempY);
+							uiAbility2.UISprite.setScale(tempX, tempY);
+							cursorSprite.setScale(tempX / 3, tempY / 3);
+							/*ui.UISprite.setScale(sf::Vector2f(ui.UISprite.getScale().x * 1.1, ui.UISprite.getScale().y * 1.1));
+							uiHealth.UISprite.setScale(sf::Vector2f(uiHealth.UISprite.getScale().x * 1.1, uiHealth.UISprite.getScale().y * 1.1));
+							uiPower.UISprite.setScale(sf::Vector2f(uiPower.UISprite.getScale().x * 1.1, uiPower.UISprite.getScale().y * 1.1));*/
 						}
 					}
 				}
+			}
+
+			sf::Vector2i mousePos;
+			mousePos = sf::Mouse::getPosition(window);
+			sf::Vector2f worldMousePos = window.mapPixelToCoords(mousePos);
+
+			cursorSprite.setPosition(worldMousePos);
+
+			ProjectileManager::GetInstance()->Update();
+			AnimationManager::GetInstance()->Update();
+			ShipManager::GetInstance()->Update();
+			WreckManager::GetInstance()->Update();
+			SoundManager::GetInstance()->Update();
+
 		}
-
-		projMan.Update();
-		aniMan.Update();
-		shipMan.Update();
-
+		
 		window.clear();
 		window.draw(backgroundSprite);
-		shipMan.Draw(window);
-		projMan.Draw(window);
-		aniMan.Draw(window);
+		WreckManager::GetInstance()->Draw(window);
+		AnimationManager::GetInstance()->Draw2(window);
+		ProjectileManager::GetInstance()->Draw2(window);
+		ShipManager::GetInstance()->Draw(window);
+		ProjectileManager::GetInstance()->Draw(window);
+		AnimationManager::GetInstance()->Draw(window);
+		ui.Draw(window);
+		uiHealth.Draw(window);
+		uiPower.Draw(window);
+		uiAbility1.Draw(window);
+		uiAbility2.Draw(window);
+		window.draw(cursorSprite);
 		window.display();
 	}
 

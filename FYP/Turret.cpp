@@ -1,9 +1,9 @@
 #include "Turret.h"
 #include "Ship.h"
 
-Turret::Turret(sf::Vector2f p, Ship& s, string t, ProjectileManager & projManager, AnimationManager& a)
+Turret::Turret(sf::Vector2f p, Ship& s, string t, sf::RenderWindow & w)
 {
-	if (!turretTexture.loadFromFile("Turret.png"))
+	if (!turretTexture.loadFromFile("Turret5.png"))
 	{
 		// error...
 	}
@@ -23,10 +23,8 @@ Turret::Turret(sf::Vector2f p, Ship& s, string t, ProjectileManager & projManage
 	ship = &s;
 
 	type = t;
-
-	projMan = & projManager;
-
-	aniMan = &a;
+	
+	window = &w;
 
 	fireTimer = 0;
 
@@ -111,8 +109,9 @@ void Turret::Update()
 			{
 				if (fireOnce1 == false)
 				{
-					projMan->CreateProjectile(firePoints.at(0), turretSprite.getPosition(), turretSprite.getRotation());
-					aniMan->CreateAnimation(firePoints.at(0), 2, turretSprite.getRotation() + 90);
+					ProjectileManager::GetInstance()->CreateProjectile(firePoints.at(0), turretSprite.getPosition(), turretSprite.getRotation());
+					AnimationManager::GetInstance()->CreateAnimation(firePoints.at(0), 2, turretSprite.getRotation() + 90);
+					SoundManager::GetInstance()->CreateSound(firePoints.at(0), 2);
 					fireOnce1 = true;
 				}
 			}
@@ -120,8 +119,9 @@ void Turret::Update()
 			{
 				if (fireOnce2 == false)
 				{
-					projMan->CreateProjectile(firePoints.at(1), turretSprite.getPosition(), turretSprite.getRotation());
-					aniMan->CreateAnimation(firePoints.at(1), 2, turretSprite.getRotation() + 90);
+					ProjectileManager::GetInstance()->CreateProjectile(firePoints.at(1), turretSprite.getPosition(), turretSprite.getRotation());
+					AnimationManager::GetInstance()->CreateAnimation(firePoints.at(1), 2, turretSprite.getRotation() + 90);
+					SoundManager::GetInstance()->CreateSound(firePoints.at(1), 2);
 					fireOnce2 = true;
 				}
 			}
@@ -129,8 +129,9 @@ void Turret::Update()
 			{
 				if (fireOnce3 == false)
 				{
-					projMan->CreateProjectile(firePoints.at(2), turretSprite.getPosition(), turretSprite.getRotation());
-					aniMan->CreateAnimation(firePoints.at(2), 2, turretSprite.getRotation() + 90);
+					ProjectileManager::GetInstance()->CreateProjectile(firePoints.at(2), turretSprite.getPosition(), turretSprite.getRotation());
+					AnimationManager::GetInstance()->CreateAnimation(firePoints.at(2), 2, turretSprite.getRotation() + 90);
+					SoundManager::GetInstance()->CreateSound(firePoints.at(2), 2);
 					fireOnce3 = true;
 				}
 			}
@@ -138,13 +139,14 @@ void Turret::Update()
 			{
 				if (fireOnce4 == false)
 				{
-					projMan->CreateProjectile(firePoints.at(3), turretSprite.getPosition(), turretSprite.getRotation());
-					aniMan->CreateAnimation(firePoints.at(3), 2, turretSprite.getRotation() + 90);
+					ProjectileManager::GetInstance()->CreateProjectile(firePoints.at(3), turretSprite.getPosition(), turretSprite.getRotation());
+					AnimationManager::GetInstance()->CreateAnimation(firePoints.at(3), 2, turretSprite.getRotation() + 90);
+					SoundManager::GetInstance()->CreateSound(firePoints.at(3), 2);
 					fireOnce4 = true;
 				}
 				//for (int i = 0; i < firePoints.size(); i++)
 				//{
-				//	projMan->CreateProjectile(firePoints.at(i), turretSprite.getPosition(), turretSprite.getRotation());
+				//	ProjectileManager::GetInstance()->CreateProjectile(firePoints.at(i), turretSprite.getPosition(), turretSprite.getRotation());
 				//}
 			}
 			if (fireTimer < 0)
@@ -162,32 +164,33 @@ void Turret::Update()
 
 	}
 	fireTimer--;
+
+	Move();
 }
 
 void Turret::Draw(sf::RenderWindow & window)
 {
-	Move(window);
 	window.draw(turretSprite);
 }
 
-void Turret::Move(sf::RenderWindow & window) {
+void Turret::Move() {
 	prevRotation = rotation;
 	position2 = turretSprite.getPosition();
 	sf::Vector2i mousePos;
 	if (type == "player")
 	{
-		mousePos = sf::Mouse::getPosition(window);
+		mousePos = sf::Mouse::getPosition(*window);
 	}
 	else if (type == "enemy")
 	{
 		mousePos = sf::Vector2i(0, -1000);
 	}
-	sf::Vector2f worldMousePos = window.mapPixelToCoords(mousePos);
+	sf::Vector2f worldMousePos = window->mapPixelToCoords(mousePos);
 	sf::Vector2f wantedVector = worldMousePos - position2;
 
 	float angleBetweenTwo = atan2(worldMousePos.y - position2.y, worldMousePos.x - position2.x);
 
-	rotation = CurveAngle(rotation, angleBetweenTwo, 0.015f);
+	rotation = CurveAngle(rotation, angleBetweenTwo, 0.040f);
 
 	//error check, rotation was crashing every so often, this is a loose fix
 	if (isnan(rotation))

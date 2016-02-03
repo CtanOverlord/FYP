@@ -20,6 +20,7 @@
 #include "Box2D\Box2D.h"
 
 #include "AnimatedSprite.hpp"
+#include "SoundManager.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,17 +37,22 @@ private:
 	sf::Texture largeExplosionTexture;
 	sf::Texture smallExplosionTexture;
 	sf::Texture fireEffectTexture;
+	sf::Texture smokeEffectTexture;
 	Animation explosion;
 	Animation largeExplosion;
 	Animation smallExplosion;
 	Animation fireEffect;
+	Animation smokeEffect;
 	sf::Clock frameClock;
+	bool checkDestroyed;
 
 public:
 
+	static AnimationManager* GetInstance();
 	AnimationManager();
 	void Update();
 	void Draw(sf::RenderWindow & window);
+	void Draw2(sf::RenderWindow & window);
 	void CreateAnimation(sf::Vector2f position, float type, float angle);
 	void DeleteExpired();
 };

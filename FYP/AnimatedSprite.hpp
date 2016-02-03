@@ -40,6 +40,10 @@ public:
     void update(sf::Time deltaTime);
     void setAnimation(const Animation& animation);
     void setFrameTime(sf::Time time);
+	void setName(std::string);
+	std::string getName();
+	void setTrans(float);
+	float getTrans();
     void play();
     void play(const Animation& animation);
     void pause();
@@ -53,6 +57,7 @@ public:
     bool isPlaying() const;
     sf::Time getFrameTime() const;
     void setFrame(std::size_t newFrame, bool resetTime = true);
+	sf::Vertex m_vertices[4];
 
 private:
     const Animation* m_animation;
@@ -61,8 +66,9 @@ private:
     std::size_t m_currentFrame;
     bool m_isPaused;
     bool m_isLooped;
+	std::string name;
     const sf::Texture* m_texture;
-    sf::Vertex m_vertices[4];
+	float trans;
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 

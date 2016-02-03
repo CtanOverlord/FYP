@@ -37,6 +37,10 @@ void Thruster::Update()
 		if (speed < 0.6)
 		{
 			speed += 0.1f;
+			if (speed > 0.3 && speed < 0.4)
+			{
+				SoundManager::GetInstance()->CreateSound(turretSprite.getPosition(), 8);
+			}
 		}
 	}
 	else

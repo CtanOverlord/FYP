@@ -20,6 +20,7 @@
 #include "Box2D\Box2D.h"
 #include<Ship.h>
 #include<ProjectileManager.h>
+#include "SoundManager.h"
 
 using namespace std;
 
@@ -44,8 +45,7 @@ private:
 	float speed;
 	vector<sf::Vector2f> firePoints;
 	vector<sf::Vector2f> firePointOrig;
-	ProjectileManager* projMan;
-	AnimationManager* aniMan;
+	sf::RenderWindow* window;
 	float fireTimer;
 	bool fireOnce1 = false;
 	bool fireOnce2 = false;
@@ -54,11 +54,11 @@ private:
 	string type;
 
 public:
-	Turret(sf::Vector2f position, Ship & ship, string type, ProjectileManager & projManager, AnimationManager& aniMan);
+	Turret(sf::Vector2f position, Ship & ship, string type, sf::RenderWindow & window);
 	void Update();
 	void Draw(sf::RenderWindow & window);
 	float to_positive_angle(float angle);
-	void Move(sf::RenderWindow & window);
+	void Move();
 	float CurveAngle(float from, float to, float step);
 	sf::Vector2f Slerp(sf::Vector2f from, sf::Vector2f to, float step);
 	sf::Vector2f normalize(sf::Vector2f source);

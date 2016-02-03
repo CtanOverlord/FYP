@@ -156,25 +156,35 @@
     <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AnimationManager.cpp" />
+    <ClCompile Include="Globals.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="ProjectileManager.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="ShipManager.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Thruster.cpp" />
     <ClCompile Include="Turret.cpp" />
+    <ClCompile Include="UIElement.cpp" />
+    <ClCompile Include="Wreck.cpp" />
+    <ClCompile Include="WreckManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedSprite.hpp" />
     <ClInclude Include="Animation.hpp" />
     <ClInclude Include="AnimationManager.h" />
     <ClInclude Include="ContactListener.h" />
+    <ClInclude Include="Globals.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="ProjectileManager.h" />
     <ClInclude Include="Ship.h" />
     <ClInclude Include="ShipManager.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Thruster.h" />
     <ClInclude Include="Turret.h" />
+    <ClInclude Include="UIElement.h" />
+    <ClInclude Include="Wreck.h" />
+    <ClInclude Include="WreckManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

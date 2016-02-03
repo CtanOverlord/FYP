@@ -22,6 +22,7 @@
 #include "Projectile.h"
 
 #include "AnimationManager.h"
+#include "SoundManager.h"
 
 using namespace std;
 
@@ -30,15 +31,19 @@ class ProjectileManager
 private:
 	b2World* world;
 	vector<Projectile*> projectiles;
-	AnimationManager* aniMan;
+	bool checkDestroyed;
 
 public:
 	
-	ProjectileManager(b2World& World, AnimationManager& aniMan);
+	static ProjectileManager* GetInstance();
+	ProjectileManager();
 	void Update();
 	void Draw(sf::RenderWindow & window);
+	void Draw2(sf::RenderWindow & window);
 	void CreateProjectile(sf::Vector2f position, sf::Vector2f pos2, float angle);
+	void CreateMissile(sf::Vector2f position, sf::Vector2f pos2, float angle);
 	void DeleteExpired();
+	void setWorld(b2World& World);
 };
 
 #endif

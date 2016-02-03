@@ -22,6 +22,7 @@
 #include "Ship.h"
 #include "AnimationManager.h"
 #include "ProjectileManager.h"
+#include "WreckManager.h"
 
 using namespace std;
 
@@ -29,17 +30,20 @@ class ShipManager
 {
 private:
 	b2World* world;
-	AnimationManager* aniMan;
-	ProjectileManager* projMan;
+	sf::RenderWindow* Window;
+	bool checkDestroyed;
 
 public:
 	
-	ShipManager(b2World& World, AnimationManager& aniMan, ProjectileManager& projMan);
+	static ShipManager* GetInstance();
+	ShipManager();
 	void Update();
 	void Draw(sf::RenderWindow & window);
 	void CreateShip(sf::Vector2f position, string t);
 	void DeleteExpired();
 	vector<Ship*> ships;
+	void setWorld(b2World& World);
+	void setWindow(sf::RenderWindow & window);
 };
 
 #endif
