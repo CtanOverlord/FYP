@@ -19,7 +19,7 @@
 #include "SFML\Graphics.hpp"
 #include "Box2D\Box2D.h"
 
-#include <Turret.h>
+#include "TurretManager.h"
 #include <ProjectileManager.h>
 #include <Thruster.h>
 #include "SoundManager.h"
@@ -36,6 +36,10 @@ class Ship
 {
 private:
 
+public:
+
+	// Variables
+
 	sf::Sprite shipSprite;
 	sf::Vector2f velocity;
 	sf::Vector2f velocity2;
@@ -47,6 +51,12 @@ private:
 	sf::Sprite boosterSprite;
 	sf::Texture shieldTexture;
 	sf::Sprite shieldSprite;
+	sf::Texture healthBoxTexture;
+	sf::Sprite healthBox;
+	sf::Texture healthBarTexture;
+	sf::Sprite healthBar;
+	sf::Texture powerTexture;
+	sf::Sprite power;
 	float speed;
 	float health;
 	float fuel;
@@ -58,6 +68,7 @@ private:
 	sf::RenderWindow* Window;
 	sf::Vector2f boosterPoint;
 	vector<Thruster*> thrusters;
+	vector<sf::Vector2f*> wreckPoint;
 	vector<sf::Vector2f*> wreckPointOrig;
 	vector<sf::Vector2f*> missilePoints;
 	vector<sf::Vector2f*> missilePointOrig;
@@ -70,30 +81,48 @@ private:
 	int missileStep;
 	int soundTimer;
 	bool onlyOnce;
+	string shipType;
+	sf::Vector2f targetPos;
+	bool firing;
+	float maxHealth;
+	bool noFuel;
+	float maxFuel;
+	int fireTimer;
+	int fireTimerMax;
+	bool manual;
 
-public:
+
+	//Methods
+
 
 	Ship(b2World& World, sf::Vector2f position, string type, sf::RenderWindow & window);
-	void Update();
-	void Draw(sf::RenderWindow & window);
+	Ship();
+	virtual void Update();
+	virtual void Draw(sf::RenderWindow & window);
+	void Draw2(sf::RenderWindow & window);
 	float to_positive_angle(float angle);
 	void Move(sf::Vector2f targetPos);
-	void CreateBody();
+	virtual void CreateBody();
 	sf::Sprite getSprite();
-	void setHealth(float);
+	virtual void setHealth(float);
 	float getHealth();
+	void setFuel(float);
+	virtual float getFuel();
 	b2Body* getBody();
 	bool destroyed;
-	vector<sf::Vector2f*> wreckPoint;
-	void updateMissilePoints();
-	void updateWreckPoints();
-	void updateThrusterPoints();
-	void updateBoosterPoints();
+	virtual void updateMissilePoints();
+	virtual void updateWreckPoints();
+	virtual void updateThrusterPoints();
+	virtual void updateBoosterPoints();
+	sf::Vector2f normalize(sf::Vector2f source);
+	float degreeToRadian(float angle);
+	float radiansToDegrees(float angle);
 	bool missileFiring;
 	int missileTimer;
 	int shieldTimer;
 	int shieldDuration;
-	void DeleteAll();
+	virtual void DeleteAll();
+	float distance(sf::Vector2f, sf::Vector2f);
 };
 
 #endif

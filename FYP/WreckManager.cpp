@@ -55,7 +55,23 @@ void WreckManager::setWorld(b2World& w)
 
 void WreckManager::DeleteExpired()
 {
-	vector<Wreck*>::iterator iter;
+	for (int i = 0; i < wrecks.size(); i++)
+	{
+		if (wrecks[i]->getTTL() <= 0)
+		{
+
+			AnimationManager::GetInstance()->CreateAnimation(wrecks.at(i)->getSprite().getPosition(), 5, 0);
+			SoundManager::GetInstance()->CreateSound(wrecks.at(i)->getSprite().getPosition(), 5);
+			world->DestroyBody(wrecks.at(i)->getBody());
+			delete wrecks.at(i);
+			wrecks.erase(wrecks.begin() + i);
+			if (i != 0)
+			{
+				i--;
+			}
+		}
+	}
+	/*vector<Wreck*>::iterator iter;
 	vector<Wreck*>::iterator endIter;
 
 	iter = wrecks.begin();
@@ -85,7 +101,7 @@ void WreckManager::DeleteExpired()
 				endIter = wrecks.end();
 			}
 		}
-	}
+	}*/
 
 	checkDestroyed = false;
 }

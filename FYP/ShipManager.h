@@ -19,12 +19,20 @@
 #include "SFML\Graphics.hpp"
 #include "Box2D\Box2D.h"
 
-#include "Ship.h"
+#include "Dreadnought.h"
+#include "Frigate.h"
+#include "Sniper.h"
 #include "AnimationManager.h"
 #include "ProjectileManager.h"
 #include "WreckManager.h"
 
 using namespace std;
+
+class Dreadnought;
+class Frigate;
+class Sniper;
+class Level;
+class CapPoint;
 
 class ShipManager
 {
@@ -32,6 +40,12 @@ private:
 	b2World* world;
 	sf::RenderWindow* Window;
 	bool checkDestroyed;
+	vector<sf::Vector2f> enemySpawns;
+	vector<sf::Vector2f> allySpawns;
+	int respawnTimer;
+	int allies;
+	int enemies;
+	int dreadnoughtCount;
 
 public:
 	
@@ -39,11 +53,18 @@ public:
 	ShipManager();
 	void Update();
 	void Draw(sf::RenderWindow & window);
-	void CreateShip(sf::Vector2f position, string t);
-	void DeleteExpired();
+	void Draw2(sf::RenderWindow & window);
+	void CreateShip(sf::Vector2f position, string t, string c);
+	void DeleteExpiredDreadnoughts();
+	void DeleteExpiredShips();
+	void DeleteExpiredFrigates();
 	vector<Ship*> ships;
+	vector<Dreadnought*> dreadnoughts;
+	vector<Frigate*> frigates;
 	void setWorld(b2World& World);
 	void setWindow(sf::RenderWindow & window);
+	void prepare();
+	void respawnPlayer(string t);
 };
 
 #endif

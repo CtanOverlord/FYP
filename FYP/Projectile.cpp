@@ -14,7 +14,7 @@ Projectile::Projectile(b2World& World, sf::Vector2f position, sf::Vector2f pos2,
 
 	target = pos2;
 
-	if (type == "plasma")
+	if (type == "plasma" || type == "plasmaE")
 	{
 		if (!projTexture.loadFromFile("Plasma.png"))
 		{
@@ -37,7 +37,7 @@ Projectile::Projectile(b2World& World, sf::Vector2f position, sf::Vector2f pos2,
 
 		projSprite.setRotation(angle);
 	}
-	else if (type == "missile")
+	else if (type == "missile" || type == "missileE")
 	{
 		if (!projTexture.loadFromFile("Missile2.png"))
 		{
@@ -58,6 +58,96 @@ Projectile::Projectile(b2World& World, sf::Vector2f position, sf::Vector2f pos2,
 
 		projSprite.setRotation(angle);
 	}
+	else if (type == "drain" || type == "drainE")
+	{
+		if (!projTexture.loadFromFile("Missile3.png"))
+		{
+			// error...
+		}
+
+		angle = a;
+
+		projTexture.setSmooth(true);
+
+		projSprite.setTexture(projTexture);
+
+		projSprite.setScale(sf::Vector2f(0.5f, 0.5f));
+
+		projSprite.setPosition(position);
+
+		projSprite.setOrigin(sf::Vector2f(10, 10));
+
+		projSprite.setRotation(angle);
+	}
+	else if (type == "slug" || type == "slugE")
+	{
+		if (!projTexture.loadFromFile("Slug2.png"))
+		{
+			// error...
+		}
+
+		angle = a;
+
+		projTexture.setSmooth(true);
+
+		projSprite.setTexture(projTexture);
+
+		projSprite.setScale(sf::Vector2f(0.5f, 0.5f));
+
+		sf::Vector2f temp = sf::Vector2f(21.5f, 22);
+
+		projSprite.setPosition((position));// +pos2) - temp);
+
+		projSprite.setOrigin(sf::Vector2f(11, 0));
+
+		projSprite.setRotation(angle);
+	}
+	else if (type == "mine" || type == "mineE")
+	{
+		if (!mineTexture.loadFromFile("MineSheet.png"))
+		{
+
+		}
+
+		mineTexture.setSmooth(true);
+
+		mine.setSpriteSheet(mineTexture);
+
+		for (int i = 0; i < 2; i++)
+		{
+			mine.addFrame(sf::IntRect(300 * i, 0, 300, 300));
+		}
+
+		angle = a;
+
+		mineSprite = AnimatedSprite(sf::seconds(0.5f), false, true);
+		mineSprite.setOrigin(150, 150);
+		mineSprite.setPosition(position);
+		mineSprite.setScale(sf::Vector2f(0.06f, 0.06f));
+		mineSprite.setRotation(angle);
+		mineSprite.play(mine);
+
+		//if (!projTexture.loadFromFile("Mine.png"))
+		//{
+		//	// error...
+		//}
+
+		//angle = a;
+
+		//projTexture.setSmooth(true);
+
+		//projSprite.setTexture(projTexture);
+
+		//projSprite.setScale(sf::Vector2f(0.06f, 0.06f));
+
+		//sf::Vector2f temp = sf::Vector2f(21.5f, 22);
+
+		//projSprite.setPosition((position));// +pos2) - temp);
+
+		//projSprite.setOrigin(sf::Vector2f(150, 150));
+
+		//projSprite.setRotation(angle);
+	}
 
 	//projSprite.setColor(sf::Color(255, 255, 255, 100));
 
@@ -65,10 +155,18 @@ Projectile::Projectile(b2World& World, sf::Vector2f position, sf::Vector2f pos2,
 
 	CreateBody();
 
-	projBody->SetTransform(b2Vec2(projSprite.getPosition().x / SCALE, projSprite.getPosition().y / SCALE), (projSprite.getRotation()) / (180.0f / b2_pi));
+	if (type == "mine" || type == "mineE")
+	{
+		projBody->SetTransform(b2Vec2(mineSprite.getPosition().x / SCALE, mineSprite.getPosition().y / SCALE), (mineSprite.getRotation()) / (180.0f / b2_pi));
+	}
+	else
+	{
+		projBody->SetTransform(b2Vec2(projSprite.getPosition().x / SCALE, projSprite.getPosition().y / SCALE), (projSprite.getRotation()) / (180.0f / b2_pi));
+	}
 
 	transform.rotate(angle, pos2);
-	if (type == "missile")
+
+	if (type == "missile" || type == "drain" || type == "missileE" || type == "drainE")
 	{
 		float scale1 = (rand() % 10 + 1) + 400;
 
@@ -76,20 +174,68 @@ Projectile::Projectile(b2World& World, sf::Vector2f position, sf::Vector2f pos2,
 
 	}
 
-	if (type == "plasma")
+	if (type == "plasma" || type == "plasmaE")
 	{
-		float scale1 = (rand() % 5 + 1) + 50;
+		float scale1 = (rand() % 5 + 1) + 60;
+
+		ttl = scale1;
+	}
+
+	if (type == "slug" || type == "slugE")
+	{
+		float scale1 = (rand() % 5 + 1) + 400;
+
+		ttl = scale1;
+	}
+
+	if (type == "mine" || type == "mineE")
+	{
+		float scale1 = (rand() % 100 + 1) + 1150;
 
 		ttl = scale1;
 
+		velocity.x = cos((mineSprite.getRotation() + 90) / (180.0f / b2_pi));
+		velocity.y = sin((mineSprite.getRotation() + 90) / (180.0f / b2_pi));
+
+		float scaler = rand() % 65 + 15;
+		/*if (scaler <= 10)
+		{
+			scaler = 1;
+		}
+		else if (scaler <= 20)
+		{
+			scaler = 2;
+		}
+		else if (scaler <= 30)
+		{
+			scaler = 3;
+		}*/
+
+		scaler = scaler /= 10;
+
+		projBody->ApplyLinearImpulse(b2Vec2(-velocity.x * scaler, -velocity.y * scaler), projBody->GetWorldCenter(), false);
+
+		float tempAngle = rand() % 100 + 1;
+
+		float temp = rand() % 10 + 1;
+
+		if (temp > 5)
+		{
+			projBody->ApplyAngularImpulse(tempAngle, false);
+		}
+		else
+		{
+			projBody->ApplyAngularImpulse(-tempAngle, false);
+		}
 	}
+
 
 	//projBody->SetTransform(projBody->GetPosition(), angle * 0.0174532925);
 }
 
 void Projectile::Update()
 {
-	if (type == "missile")
+	if (type == "missile" || type == "missileE")
 	{
 		if (vel < 6)
 		{
@@ -107,7 +253,7 @@ void Projectile::Update()
 		projBody->SetTransform(b2Vec2(projSprite.getPosition().x / SCALE, projSprite.getPosition().y / SCALE), projBody->GetAngle()); // (projSprite.getRotation() + 90) / (180.0f / b2_pi));
 		//projSprite.setRotation(projSprite.getRotation() + 0.5);
 	}
-	else if (type == "plasma")
+	else if (type == "plasma" || type == "plasmaE")
 	{
 		velocity.x = cos((angle + 90) / (180.0f / b2_pi));
 		velocity.y = sin((angle + 90) / (180.0f / b2_pi));
@@ -115,13 +261,53 @@ void Projectile::Update()
 		projSprite.setPosition(projSprite.getPosition().x - velocity.x * 10, projSprite.getPosition().y - velocity.y * 10);
 		projBody->SetTransform(b2Vec2(projSprite.getPosition().x / SCALE, projSprite.getPosition().y / SCALE), (projSprite.getRotation() + 90) / (180.0f / b2_pi));
 	}
+	else if (type == "slug" || type == "slugE")
+	{
+		velocity.x = cos((angle + 90) / (180.0f / b2_pi));
+		velocity.y = sin((angle + 90) / (180.0f / b2_pi));
+
+		projSprite.setPosition(projSprite.getPosition().x - velocity.x * 30, projSprite.getPosition().y - velocity.y * 30);
+		projBody->SetTransform(b2Vec2(projSprite.getPosition().x / SCALE, projSprite.getPosition().y / SCALE), (projSprite.getRotation() + 90) / (180.0f / b2_pi));
+	}
+	else if (type == "drain" || type == "drainE")
+	{
+
+		if (vel < 6)
+		{
+			vel = vel + 0.15f;
+		}
+
+		velocity.x = cos((angle + 90) / (180.0f / b2_pi));
+		velocity.y = sin((angle + 90) / (180.0f / b2_pi));
+
+		projSprite.setPosition(projSprite.getPosition().x - velocity.x * vel, projSprite.getPosition().y - velocity.y * vel);
+		projBody->SetTransform(b2Vec2(projSprite.getPosition().x / SCALE, projSprite.getPosition().y / SCALE), (projSprite.getRotation() + 90) / (180.0f / b2_pi));
+	}
+	else if (type == "mine" || type == "mineE")
+	{
+		//projSprite.setPosition(projSprite.getPosition().x - velocity.x * vel, projSprite.getPosition().y - velocity.y * vel);
+		//projBody->SetTransform(b2Vec2(projSprite.getPosition().x / SCALE, projSprite.getPosition().y / SCALE), (projSprite.getRotation() + 90) / (180.0f / b2_pi));
+		mineSprite.setPosition(projBody->GetPosition().x * SCALE, projBody->GetPosition().y * SCALE);
+		mineSprite.setRotation(projBody->GetAngle());
+
+		sf::Time frameTime = frameClock.restart();
+
+		mineSprite.update(frameTime);
+	}
 
 	ttl--;
 }
 
 void Projectile::Draw(sf::RenderWindow & window)
 {
-	window.draw(projSprite);
+	if (type == "mine" || type == "mineE")
+	{
+		window.draw(mineSprite);
+	}
+	else
+	{
+		window.draw(projSprite);
+	}
 }
 
 sf::Sprite Projectile::getSprite()
@@ -147,7 +333,14 @@ b2Body* Projectile::getBody()
 void Projectile::CreateBody()
 {
 	b2BodyDef BodyDef;
-	BodyDef.position = b2Vec2(projSprite.getPosition().x / SCALE, projSprite.getPosition().y / SCALE);
+	if (type == "mine" || type == "mineE")
+	{
+		BodyDef.position = b2Vec2(mineSprite.getPosition().x / SCALE, mineSprite.getPosition().y / SCALE);
+	}
+	else
+	{
+		BodyDef.position = b2Vec2(projSprite.getPosition().x / SCALE, projSprite.getPosition().y / SCALE);
+	}
 	BodyDef.type = b2_dynamicBody;
 	BodyDef.userData = this;
 	b2Body* Body = world->CreateBody(&BodyDef);
@@ -155,8 +348,15 @@ void Projectile::CreateBody()
 	Body->SetSleepingAllowed(false);
 
 	b2PolygonShape Shape;
-	//Shape.SetAsBox(((projSprite.getTextureRect().width * projSprite.getScale().x) / 2) / SCALE, ((projSprite.getTextureRect().height * projSprite.getScale().x) / 2) / SCALE);
-	Shape.SetAsBox((5.5 / 2) / SCALE, (22 / 2) / SCALE);
+	if (type == "mine" || type == "mineE")
+	{
+		Shape.SetAsBox((18 / 2) / SCALE, (18 / 2) / SCALE);
+	}
+	else
+	{
+		Shape.SetAsBox(((projSprite.getTextureRect().width * projSprite.getScale().x) / 2) / SCALE, ((projSprite.getTextureRect().height * projSprite.getScale().x) / 2) / SCALE);
+	}
+	//Shape.SetAsBox((5.5 / 2) / SCALE, (22 / 2) / SCALE);
 	b2FixtureDef FixtureDef;
 	FixtureDef.density = 1.0f;
 	FixtureDef.friction = 0.0f;
@@ -168,13 +368,65 @@ void Projectile::CreateBody()
 		FixtureDef.filter.maskBits = 0x0010 | 0x0002;
 		FixtureDef.userData = "plasma";
 	}
+	if (type == "plasmaE")
+	{
+		FixtureDef.filter.categoryBits = 0x0004;
+		FixtureDef.filter.maskBits = 0x0010 | 0x0001;
+		FixtureDef.userData = "plasmaE";
+	}
 	else if (type == "missile")
 	{
 		FixtureDef.filter.categoryBits = 0x0008;
 		FixtureDef.filter.maskBits = 0x0010 | 0x0002;
 		FixtureDef.userData = "missile";
 	}
+	else if (type == "missileE")
+	{
+		FixtureDef.filter.categoryBits = 0x0008;
+		FixtureDef.filter.maskBits = 0x0010 | 0x0001;
+		FixtureDef.userData = "missileE";
+	}
+	else if (type == "drain")
+	{
+		FixtureDef.filter.categoryBits = 0x0008;
+		FixtureDef.filter.maskBits = 0x0010 | 0x0002;
+		FixtureDef.userData = "drain";
+	}
+	else if (type == "drainE")
+	{
+		FixtureDef.filter.categoryBits = 0x0008;
+		FixtureDef.filter.maskBits = 0x0010 | 0x0001;
+		FixtureDef.userData = "drainE";
+	}
+	else if (type == "slug")
+	{
+		FixtureDef.filter.categoryBits = 0x0008;
+		FixtureDef.filter.maskBits = 0x0010 | 0x0002;
+		FixtureDef.userData = "slug";
+	}
+	else if (type == "slugE")
+	{
+		FixtureDef.filter.categoryBits = 0x0008;
+		FixtureDef.filter.maskBits = 0x0010 | 0x0001;
+		FixtureDef.userData = "slugE";
+	}
+	else if (type == "mine")
+	{
+		FixtureDef.filter.categoryBits = 0x0008;
+		FixtureDef.filter.maskBits = 0x0010 | 0x0002;
+		FixtureDef.userData = "mine";
+		Body->SetLinearDamping(1.0);
+	}
+	else if (type == "mineE")
+	{
+		FixtureDef.filter.categoryBits = 0x0008;
+		FixtureDef.filter.maskBits = 0x0010 | 0x0001;
+		FixtureDef.userData = "mineE";
+		Body->SetLinearDamping(1.0);
+	}
+
 	FixtureDef.isSensor = true;
+
 	Body->CreateFixture(&FixtureDef);
 	
 	projBody = Body;

@@ -12,6 +12,9 @@ Globals::Globals()
 	   MISSILE = 0x0008,
 	   WRECK = 0x0010,
 	};
+
+	blueScore = 0;
+	redScore = 0;
 }
 
 Globals * Globals::GetInstance()

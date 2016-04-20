@@ -11,6 +11,8 @@ public:
 	Globals();
 	static Globals* GetInstance();
 	enum entityCats;
+	float blueScore;
+	float redScore;
 };
 
 #endif 

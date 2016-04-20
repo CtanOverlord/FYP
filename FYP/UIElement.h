@@ -19,6 +19,7 @@
 #include "SFML\Graphics.hpp"
 #include "Box2D\Box2D.h"
 #include "ShipManager.h"
+#include "Globals.h"
 
 using namespace std;
 
@@ -30,14 +31,18 @@ private:
 	sf::Texture UIAltTexture;
 	sf::Vector2f initPos;
 	int type;
+	sf::Font font;
 
 public:
 	UIElement(sf::Vector2f position, float angle, bool active, int type);
+	UIElement();
 	void Update();
 	void Draw(sf::RenderWindow & window);
 	bool active;
 	sf::Vector2f position;
 	sf::Sprite UISprite;
+	sf::Text blueText;
+	sf::Text redText;
 };
 
 #endif

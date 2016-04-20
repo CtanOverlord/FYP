@@ -32,7 +32,6 @@ class SoundManager
 {
 private:
 	vector<sf::Sound*> sounds;
-	vector<sf::Music*> music;
 	sf::SoundBuffer missileLaunch;
 	sf::SoundBuffer cannonFire;
 	sf::SoundBuffer explosion1;
@@ -43,7 +42,12 @@ private:
 	sf::SoundBuffer missileExplosion;
 	sf::SoundBuffer thrusterSound;
 	sf::SoundBuffer engineSound;
+	sf::SoundBuffer laserSound;
+	sf::SoundBuffer cloakOnSound;
+	sf::SoundBuffer cloakOffSound;
+	sf::SoundBuffer mineSound;
 	sf::Sound engine;
+	sf::Sound laser;
 	sf::SoundBuffer thrustersSound;
 	sf::Sound thrusters;
 	sf::SoundBuffer shieldSound;
@@ -52,6 +56,7 @@ private:
 	float speed;
 	bool shieldsActive;
 	int thrusterSpeed;
+	bool laserActive;
 
 public:
 
@@ -62,6 +67,10 @@ public:
 	void DeleteExpired();
 	void ShieldsOn();
 	void ShieldsOff();
+	void LaserOn();
+	void LaserOff();
+	void setShipPos(sf::Vector2f p);
+	vector<sf::Music*> music;
 };
 
 #endif

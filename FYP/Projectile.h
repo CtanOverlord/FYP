@@ -23,6 +23,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "AnimationManager.h"
+
 using namespace std;
 
 class Projectile
@@ -36,6 +38,8 @@ private:
 	sf::Vector2f position2;
 	sf::Texture projTexture;
 	sf::Vector2f target;
+	sf::Texture mineTexture;
+	Animation mine;
 	float speed;
 	b2Body* projBody;
 	b2World* world;
@@ -46,6 +50,7 @@ private:
 	float vel;
 	float rotation;
 	float prevRotation;
+	sf::Clock frameClock;
 
 public:
 	
@@ -65,6 +70,7 @@ public:
 	float degreeToRadian(float angle);
 	float radiansToDegrees(float angle);
 	float dotProduct(sf::Vector2f v1, sf::Vector2f v2);
+	AnimatedSprite mineSprite;
 };
 
 #endif

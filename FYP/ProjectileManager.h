@@ -40,8 +40,11 @@ public:
 	void Update();
 	void Draw(sf::RenderWindow & window);
 	void Draw2(sf::RenderWindow & window);
-	void CreateProjectile(sf::Vector2f position, sf::Vector2f pos2, float angle);
-	void CreateMissile(sf::Vector2f position, sf::Vector2f pos2, float angle);
+	void CreateProjectile(sf::Vector2f position, sf::Vector2f pos2, float angle, bool e);
+	void CreateMissile(sf::Vector2f position, sf::Vector2f pos2, float angle, bool e);
+	void CreateDrain(sf::Vector2f position, sf::Vector2f pos2, float angle, bool e);
+	void CreateSlug(sf::Vector2f position, sf::Vector2f pos2, float angle, bool e);
+	void CreateMine(sf::Vector2f position, sf::Vector2f pos2, float angle, bool e);
 	void DeleteExpired();
 	void setWorld(b2World& World);
 };

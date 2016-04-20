@@ -32,6 +32,41 @@ Wreck::Wreck(b2World& World, sf::Vector2f position, float a, int type)
 
 		}
 	}
+	if (type == 4)
+	{
+		if (!wreckTexture.loadFromFile("FrigateWreck1.png"))
+		{
+
+		}
+	}
+	if (type == 5)
+	{
+		if (!wreckTexture.loadFromFile("FrigateWreck2.png"))
+		{
+
+		}
+	}
+	if (type == 6)
+	{
+		if (!wreckTexture.loadFromFile("SniperWreck1.png"))
+		{
+
+		}
+	}
+	if (type == 7)
+	{
+		if (!wreckTexture.loadFromFile("SniperWreck2.png"))
+		{
+
+		}
+	}
+	if (type == 8)
+	{
+		if (!wreckTexture.loadFromFile("SniperWreck3.png"))
+		{
+
+		}
+	}
 
 	angle = a;
 	
@@ -58,6 +93,26 @@ Wreck::Wreck(b2World& World, sf::Vector2f position, float a, int type)
 	if (type == 3)
 	{
 		wreckSprite.setOrigin(sf::Vector2f(108, 153));
+	}
+	if (type == 4)
+	{
+		wreckSprite.setOrigin(sf::Vector2f(61, 101.5));
+	}
+	if (type == 5)
+	{
+		wreckSprite.setOrigin(sf::Vector2f(67.5, 76.5));
+	}
+	if (type == 6)
+	{
+		wreckSprite.setOrigin(sf::Vector2f(100, 103.5));
+	}
+	if (type == 7)
+	{
+		wreckSprite.setOrigin(sf::Vector2f(28, 170));
+	}
+	if (type == 8)
+	{
+		wreckSprite.setOrigin(sf::Vector2f(27.5, 182.5));
 	}
 
 	wreckSprite.setRotation(angle);
@@ -121,6 +176,66 @@ Wreck::Wreck(b2World& World, sf::Vector2f position, float a, int type)
 		else
 		{
 			wreckBody->ApplyAngularImpulse(-temp2, false);
+		}
+	}
+	if (type == 4)
+	{
+		wreckBody->ApplyLinearImpulse(b2Vec2(-direction.x / 14,- direction.y / 14), wreckBody->GetWorldCenter(), false);
+		if (temp == 1)
+		{
+			wreckBody->ApplyAngularImpulse(temp2 / 2, false);
+		}
+		else
+		{
+			wreckBody->ApplyAngularImpulse(-temp2 / 2, false);
+		}
+	}
+	if (type == 5)
+	{
+		wreckBody->ApplyLinearImpulse(b2Vec2(direction.x / 14, direction.y / 14), wreckBody->GetWorldCenter(), false);
+		if (temp == 1)
+		{
+			wreckBody->ApplyAngularImpulse(temp2 / 2, false);
+		}
+		else
+		{
+			wreckBody->ApplyAngularImpulse(-temp2 / 2, false);
+		}
+	}
+	if (type == 6)
+	{
+		wreckBody->ApplyLinearImpulse(b2Vec2(direction.x / 14, direction.y / 14), wreckBody->GetWorldCenter(), false);
+		if (temp == 1)
+		{
+			wreckBody->ApplyAngularImpulse(temp2 / 2, false);
+		}
+		else
+		{
+			wreckBody->ApplyAngularImpulse(-temp2 / 2, false);
+		}
+	}
+	if (type == 7)
+	{
+		wreckBody->ApplyLinearImpulse(b2Vec2(-direction.x / 14, -direction.y / 14), wreckBody->GetWorldCenter(), false);
+		if (temp == 1)
+		{
+			wreckBody->ApplyAngularImpulse(temp2 / 2, false);
+		}
+		else
+		{
+			wreckBody->ApplyAngularImpulse(-temp2 / 2, false);
+		}
+	}
+	if (type == 8)
+	{
+		wreckBody->ApplyLinearImpulse(b2Vec2(direction.x / 14, -direction.y / 14), wreckBody->GetWorldCenter(), false);
+		if (temp == 1)
+		{
+			wreckBody->ApplyAngularImpulse(temp2 / 2, false);
+		}
+		else
+		{
+			wreckBody->ApplyAngularImpulse(-temp2 / 2, false);
 		}
 	}
 
@@ -188,7 +303,7 @@ void Wreck::CreateBody()
 	FixtureDef.friction = 0.0f;
 	FixtureDef.shape = &Shape;
 	FixtureDef.filter.categoryBits = 0x0010;
-	FixtureDef.filter.maskBits = 0x0002 | 0x0001 | 0x0004 | 0x0008;
+	FixtureDef.filter.maskBits = 0x0010 | 0x0002 | 0x0001 | 0x0004 | 0x0008;
 	FixtureDef.userData = "wreck";
 	//FixtureDef.isSensor = true;
 	Body->CreateFixture(&FixtureDef);

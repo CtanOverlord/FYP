@@ -3,6 +3,11 @@
 
 static const float SCALE = 30.f;
 
+Ship::Ship()
+{
+
+}
+
 Ship::Ship(b2World& World, sf::Vector2f position, string t, sf::RenderWindow & window)
 {
 	if (!shipTexture.loadFromFile("Ship3.png"))
@@ -27,6 +32,8 @@ Ship::Ship(b2World& World, sf::Vector2f position, string t, sf::RenderWindow & w
 	delay = 19; // or 17
 
 	health = 1000;
+
+	fuel = 1000;
 
 	soundTimer = 0;
 
@@ -155,12 +162,19 @@ Ship::Ship(b2World& World, sf::Vector2f position, string t, sf::RenderWindow & w
 	wreckPointOrig.push_back(new sf::Vector2f(148, 91));
 	wreckPointOrig.push_back(new sf::Vector2f(145, 223));
 
-	turrets.push_back(new Turret(sf::Vector2f(75, 80), *this, type, *Window));
-	turrets.push_back(new Turret(sf::Vector2f(124, 80), *this, type, *Window));
-	turrets.push_back(new Turret(sf::Vector2f(75, 127), *this, type, *Window));
-	turrets.push_back(new Turret(sf::Vector2f(124, 127), *this, type, *Window));
-	turrets.push_back(new Turret(sf::Vector2f(75, 175), *this, type, *Window));
-	turrets.push_back(new Turret(sf::Vector2f(124, 175), *this, type, *Window));
+	TurretManager::GetInstance()->CreateTurret(new Turret(sf::Vector2f(75, 80), *this, type, "Plasma", *Window, *world));
+	TurretManager::GetInstance()->CreateTurret(new Turret(sf::Vector2f(124, 80), *this, type, "Plasma", *Window, *world));
+	TurretManager::GetInstance()->CreateTurret(new Turret(sf::Vector2f(75, 127), *this, type, "Plasma", *Window, *world));
+	TurretManager::GetInstance()->CreateTurret(new Turret(sf::Vector2f(124, 127), *this, type, "Plasma", *Window, *world));
+	TurretManager::GetInstance()->CreateTurret(new Turret(sf::Vector2f(75, 175), *this, type, "Plasma", *Window, *world));
+	TurretManager::GetInstance()->CreateTurret(new Turret(sf::Vector2f(124, 175), *this, type, "Plasma", *Window, *world));
+
+	//turrets.push_back(new Turret(sf::Vector2f(75, 80), *this, type, "Plasma", *Window, *world));
+	//turrets.push_back(new Turret(sf::Vector2f(124, 80), *this, type, "Plasma", *Window, *world));
+	//turrets.push_back(new Turret(sf::Vector2f(75, 127), *this, type, "Plasma", *Window, *world));
+	//turrets.push_back(new Turret(sf::Vector2f(124, 127), *this, type, "Plasma", *Window, *world));
+	//turrets.push_back(new Turret(sf::Vector2f(75, 175), *this, type, "Plasma", *Window, *world));
+	//turrets.push_back(new Turret(sf::Vector2f(124, 175), *this, type, "Plasma", *Window, *world));
 
 	thrusters.push_back(new Thruster(sf::Vector2f(70, 4), 0, false, "front"));
 	thrusters.push_back(new Thruster(sf::Vector2f(75, 4), 0, false, "front"));
@@ -212,6 +226,11 @@ Ship::Ship(b2World& World, sf::Vector2f position, string t, sf::RenderWindow & w
 
 void Ship::Update()
 {
+	if (fuel < 1000)
+	{
+		fuel += 1.0f;
+	}
+
 	shieldSprite.setPosition(shipSprite.getPosition());
 	
 	shieldSprite.setRotation(shipSprite.getRotation());
@@ -479,9 +498,9 @@ void Ship::Update()
 			{
 				updateMissilePoints();
 
-				ProjectileManager::GetInstance()->CreateMissile(*missilePoints.at(fireCount), worldMousePos, shipSprite.getRotation() - 90);
+				ProjectileManager::GetInstance()->CreateMissile(*missilePoints.at(fireCount), worldMousePos, shipSprite.getRotation() - 90, false);
 
-				ProjectileManager::GetInstance()->CreateMissile(*missilePoints.at(fireCount + 8), worldMousePos, shipSprite.getRotation() + 90);
+				ProjectileManager::GetInstance()->CreateMissile(*missilePoints.at(fireCount + 8), worldMousePos, shipSprite.getRotation() + 90, false);
 
 				SoundManager::GetInstance()->CreateSound(*missilePoints.at(fireCount + 8), 1);
 
@@ -528,8 +547,14 @@ void Ship::Draw(sf::RenderWindow & window)
 	{
 		turrets.at(i)->Draw(window);
 	}
-	
-	window.draw(shieldSprite);
+}
+
+void Ship::Draw2(sf::RenderWindow & window)
+{
+	if (shipType == "Dreadnought")
+	{
+		window.draw(shieldSprite);
+	}
 }
 
 float Ship::to_positive_angle(float angle)
@@ -540,6 +565,13 @@ float Ship::to_positive_angle(float angle)
 	}
 
 	return angle;
+}
+
+float Ship::distance(sf::Vector2f d1, sf::Vector2f d2)
+{
+	float d = sqrt(((d1.x - d2.x) * (d1.x - d2.x)) + ((d1.y - d2.y) * (d1.y - d2.y)));
+
+	return d;
 }
 
 sf::Sprite Ship::getSprite()
@@ -557,9 +589,40 @@ void Ship::setHealth(float h)
 	health = h;
 }
 
+float Ship::getFuel()
+{
+	return fuel;
+}
+
+void Ship::setFuel(float f)
+{
+	fuel = f;
+}
+
 b2Body* Ship::getBody()
 {
 	return shipBody;
+}
+
+sf::Vector2f Ship::normalize(sf::Vector2f source)
+{
+	float length = sqrt((source.x * source.x) + (source.y * source.y));
+	if (length != 0)
+		return sf::Vector2f(source.x / length, source.y / length);
+	else
+		return source;
+}
+
+float Ship::degreeToRadian(float angle)
+{
+	float pi = 3.14159265358979323846;
+	return  pi * angle / 180.0;
+}
+
+float Ship::radiansToDegrees(float angle)
+{
+	float pi = 3.14159265358979323846;
+	return angle * (180.0 / pi);
 }
 
 void Ship::CreateBody()

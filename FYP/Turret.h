@@ -18,9 +18,11 @@
 
 #include "SFML\Graphics.hpp"
 #include "Box2D\Box2D.h"
-#include<Ship.h>
-#include<ProjectileManager.h>
+#include <Ship.h>
+#include <ProjectileManager.h>
 #include "SoundManager.h"
+#include "RayCastCallBackCustom.h"
+#include "Wreck.h"
 
 using namespace std;
 
@@ -30,8 +32,20 @@ class Turret
 {
 private:
 
+	sf::Sound laser;
+	sf::SoundBuffer laserSound;
+	sf::Sound steam;
+	sf::SoundBuffer steamSound;
 	sf::Sprite turretSprite;
+	sf::Sprite laserBeam;
+	sf::Sprite impact;
+	sf::Sprite heat;
+	sf::Sprite vent;
 	sf::Texture turretTexture;
+	sf::Texture laserTexture;
+	sf::Texture impactTexture;
+	sf::Texture heatTexture;
+	sf::Texture ventTexture;
 	sf::Vector2f position;
 	sf::Vector2f position2;
 	sf::Vector2f direction;
@@ -39,6 +53,7 @@ private:
 	sf::Vector2f firePoint2;
 	sf::Vector2f firePoint3;
 	sf::Vector2f firePoint4;
+	RayCastCallBackCustom* rayCallBack;
 	float rotation;
 	float prevRotation;
 	Ship* ship;
@@ -52,11 +67,22 @@ private:
 	bool fireOnce3 = false;
 	bool fireOnce4 = false;
 	string type;
+	string weaponType;
+	b2World* world;
+	sf::Vector2f beamImpact;
+	sf::Vector2f prevImpact;
+	int timer;
+	bool released;
+	bool released2;
+	bool overheated;
+	int heatTimer;
+	bool laserActive;
 
 public:
-	Turret(sf::Vector2f position, Ship & ship, string type, sf::RenderWindow & window);
+	Turret(sf::Vector2f position, Ship & ship, string type ,string weaponType, sf::RenderWindow & window, b2World& World);
 	void Update();
 	void Draw(sf::RenderWindow & window);
+	void Draw2(sf::RenderWindow & window);
 	float to_positive_angle(float angle);
 	void Move();
 	float CurveAngle(float from, float to, float step);
@@ -65,6 +91,8 @@ public:
 	float degreeToRadian(float angle);
 	float radiansToDegrees(float angle);
 	float dotProduct(sf::Vector2f v1, sf::Vector2f v2);
+	bool destroyed;
+	float distance(sf::Vector2f, sf::Vector2f);
 };
 
 #endif
