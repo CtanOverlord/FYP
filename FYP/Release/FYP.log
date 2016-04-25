@@ -1,25 +1,375 @@
-﻿Build started 4/21/2016 11:13:01 AM.
+﻿Build started 4/25/2016 11:00:53 AM.
      1>Project "C:\Users\DavidGerigPC\Desktop\FYP\FYP\FYP.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:\SFML\include /I./ /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _DEBUG /D WIN32 /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /MDd /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Turret.cpp
-         Turret.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:\SFML\include /I./ /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _DEBUG /D WIN32 /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /MDd /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt CapPoint.cpp Dreadnought.cpp Frigate.cpp Level.cpp Main.cpp Menu.cpp ShipManager.cpp Sniper.cpp UIElement.cpp
+         CapPoint.cpp
      1>c:\users\davidgerigpc\desktop\fyp\fyp\RayCastCallBackCustom.h(5): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-     1>Turret.cpp(44): warning C4305: 'argument': truncation from 'double' to 'float'
-     1>Turret.cpp(59): warning C4305: 'argument': truncation from 'double' to 'float'
-     1>Turret.cpp(181): warning C4018: '<': signed/unsigned mismatch
-     1>Turret.cpp(210): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-     1>Turret.cpp(211): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-     1>Turret.cpp(223): warning C4018: '<': signed/unsigned mismatch
-     1>Turret.cpp(228): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-     1>Turret.cpp(229): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-     1>Turret.cpp(379): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-     1>Turret.cpp(725): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-     1>Turret.cpp(929): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-     1>Turret.cpp(930): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-     1>Turret.cpp(1003): warning C4305: 'initializing': truncation from 'double' to 'float'
-     1>Turret.cpp(1004): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-     1>Turret.cpp(1009): warning C4305: 'initializing': truncation from 'double' to 'float'
-     1>Turret.cpp(1010): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+     1>CapPoint.cpp(191): warning C4018: '<': signed/unsigned mismatch
+     1>CapPoint.cpp(251): warning C4018: '<': signed/unsigned mismatch
+     1>CapPoint.cpp(261): warning C4018: '<': signed/unsigned mismatch
+     1>CapPoint.cpp(328): warning C4305: '+=': truncation from 'double' to 'float'
+     1>CapPoint.cpp(334): warning C4305: '+=': truncation from 'double' to 'float'
+     1>CapPoint.cpp(398): warning C4553: '==': operator has no effect; did you intend '='?
+     1>CapPoint.cpp(410): warning C4553: '==': operator has no effect; did you intend '='?
+     1>CapPoint.cpp(429): warning C4553: '==': operator has no effect; did you intend '='?
+     1>CapPoint.cpp(448): warning C4553: '==': operator has no effect; did you intend '='?
+         Dreadnought.cpp
+     1>c:\users\davidgerigpc\desktop\fyp\fyp\RayCastCallBackCustom.h(5): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>Dreadnought.cpp(204): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>Dreadnought.cpp(396): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(430): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(443): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(455): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(467): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(479): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(489): warning C4244: 'argument': conversion from 'double' to 'float32', possible loss of data
+     1>Dreadnought.cpp(516): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Dreadnought.cpp(561): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(574): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Dreadnought.cpp(575): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Dreadnought.cpp(577): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Dreadnought.cpp(578): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Dreadnought.cpp(588): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(621): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Dreadnought.cpp(626): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+     1>Dreadnought.cpp(631): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Dreadnought.cpp(636): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+     1>Dreadnought.cpp(757): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(886): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(898): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(909): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(920): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(975): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Dreadnought.cpp(998): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1009): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1019): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1054): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1102): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Dreadnought.cpp(1147): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1160): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Dreadnought.cpp(1161): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Dreadnought.cpp(1163): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Dreadnought.cpp(1164): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Dreadnought.cpp(1174): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1206): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Dreadnought.cpp(1211): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+     1>Dreadnought.cpp(1216): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Dreadnought.cpp(1221): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+     1>Dreadnought.cpp(1285): warning C4305: 'initializing': truncation from '__int64' to 'float'
+     1>Dreadnought.cpp(1288): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1319): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+     1>Dreadnought.cpp(1320): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+     1>Dreadnought.cpp(1325): warning C4305: '=': truncation from '__int64' to 'float'
+     1>Dreadnought.cpp(1326): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1370): warning C4305: 'initializing': truncation from '__int64' to 'float'
+     1>Dreadnought.cpp(1373): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1409): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+     1>Dreadnought.cpp(1410): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+     1>Dreadnought.cpp(1415): warning C4305: '=': truncation from '__int64' to 'float'
+     1>Dreadnought.cpp(1416): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1460): warning C4305: 'initializing': truncation from '__int64' to 'float'
+     1>Dreadnought.cpp(1462): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1493): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+     1>Dreadnought.cpp(1494): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+     1>Dreadnought.cpp(1499): warning C4305: '=': truncation from '__int64' to 'float'
+     1>Dreadnought.cpp(1500): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1567): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1658): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1663): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Dreadnought.cpp(1664): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Dreadnought.cpp(1679): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1684): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Dreadnought.cpp(1685): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Dreadnought.cpp(1697): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1702): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Dreadnought.cpp(1703): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Dreadnought.cpp(1718): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1723): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Dreadnought.cpp(1724): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Dreadnought.cpp(1752): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1757): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Dreadnought.cpp(1758): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Dreadnought.cpp(1775): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Dreadnought.cpp(1776): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Dreadnought.cpp(1793): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1797): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1801): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1805): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1809): warning C4018: '<': signed/unsigned mismatch
+     1>Dreadnought.cpp(1813): warning C4018: '<': signed/unsigned mismatch
+         Frigate.cpp
+     1>c:\users\davidgerigpc\desktop\fyp\fyp\RayCastCallBackCustom.h(5): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>Frigate.cpp(241): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>Frigate.cpp(380): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(415): warning C4305: 'argument': truncation from 'double' to 'float32'
+     1>Frigate.cpp(417): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(428): warning C4305: 'argument': truncation from 'double' to 'float32'
+     1>Frigate.cpp(430): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(442): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(454): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(473): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(523): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Frigate.cpp(569): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(586): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(587): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(589): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(590): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(592): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(632): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Frigate.cpp(637): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+     1>Frigate.cpp(642): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Frigate.cpp(647): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+     1>Frigate.cpp(744): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(873): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(885): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(896): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(907): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(958): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(981): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(992): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(1002): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(1050): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(1095): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Frigate.cpp(1141): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(1158): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(1159): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(1161): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(1162): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(1164): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(1204): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Frigate.cpp(1209): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+     1>Frigate.cpp(1214): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Frigate.cpp(1219): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+     1>Frigate.cpp(1273): warning C4305: 'initializing': truncation from '__int64' to 'float'
+     1>Frigate.cpp(1275): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(1306): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+     1>Frigate.cpp(1307): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+     1>Frigate.cpp(1312): warning C4305: '=': truncation from '__int64' to 'float'
+     1>Frigate.cpp(1313): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(1359): warning C4305: 'initializing': truncation from '__int64' to 'float'
+     1>Frigate.cpp(1361): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(1392): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+     1>Frigate.cpp(1393): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+     1>Frigate.cpp(1398): warning C4305: '=': truncation from '__int64' to 'float'
+     1>Frigate.cpp(1399): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(1467): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(1541): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(1546): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(1547): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(1561): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(1566): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(1567): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(1579): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(1584): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(1585): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(1601): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(1606): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(1607): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(1635): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(1640): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(1641): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(1658): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(1659): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(1675): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(1676): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(1692): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(1693): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Frigate.cpp(1710): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(1714): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(1718): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(1722): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(1726): warning C4018: '<': signed/unsigned mismatch
+     1>Frigate.cpp(1730): warning C4018: '<': signed/unsigned mismatch
+         Level.cpp
+     1>c:\users\davidgerigpc\desktop\fyp\fyp\RayCastCallBackCustom.h(5): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>Level.cpp(131): warning C4018: '<': signed/unsigned mismatch
+     1>Level.cpp(135): warning C4018: '<': signed/unsigned mismatch
+     1>Level.cpp(143): warning C4018: '<': signed/unsigned mismatch
+     1>Level.cpp(147): warning C4018: '<': signed/unsigned mismatch
+         Main.cpp
+     1>c:\users\davidgerigpc\desktop\fyp\fyp\RayCastCallBackCustom.h(5): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>Main.cpp(56): warning C4101: 'myClock': unreferenced local variable
+         Menu.cpp
+     1>c:\users\davidgerigpc\desktop\fyp\fyp\RayCastCallBackCustom.h(5): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>Menu.cpp(22): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>Menu.cpp(39): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>Menu.cpp(56): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>Menu.cpp(73): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>Menu.cpp(90): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>Menu.cpp(108): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>Menu.cpp(126): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+         ShipManager.cpp
+     1>c:\users\davidgerigpc\desktop\fyp\fyp\RayCastCallBackCustom.h(5): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>ShipManager.cpp(99): warning C4018: '<': signed/unsigned mismatch
+     1>ShipManager.cpp(118): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>ShipManager.cpp(119): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>ShipManager.cpp(125): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+     1>ShipManager.cpp(129): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>ShipManager.cpp(132): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+     1>ShipManager.cpp(136): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+     1>ShipManager.cpp(142): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+     1>ShipManager.cpp(146): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+     1>ShipManager.cpp(154): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>ShipManager.cpp(155): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>ShipManager.cpp(161): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+     1>ShipManager.cpp(165): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>ShipManager.cpp(168): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+     1>ShipManager.cpp(172): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+     1>ShipManager.cpp(178): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+     1>ShipManager.cpp(182): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+     1>ShipManager.cpp(187): warning C4018: '<': signed/unsigned mismatch
+     1>ShipManager.cpp(210): warning C4018: '<': signed/unsigned mismatch
+     1>ShipManager.cpp(221): warning C4018: '<': signed/unsigned mismatch
+     1>ShipManager.cpp(276): warning C4018: '<': signed/unsigned mismatch
+     1>ShipManager.cpp(289): warning C4018: '<': signed/unsigned mismatch
+     1>ShipManager.cpp(320): warning C4018: '<': signed/unsigned mismatch
+     1>ShipManager.cpp(333): warning C4018: '<': signed/unsigned mismatch
+     1>ShipManager.cpp(352): warning C4018: '<': signed/unsigned mismatch
+         Sniper.cpp
+     1>c:\users\davidgerigpc\desktop\fyp\fyp\RayCastCallBackCustom.h(5): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>Sniper.cpp(13): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>Sniper.cpp(164): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(172): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(174): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(177): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(223): warning C4305: 'argument': truncation from 'double' to 'float'
+     1>Sniper.cpp(238): warning C4305: 'argument': truncation from 'double' to 'float'
+     1>Sniper.cpp(472): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(477): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(478): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(490): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(495): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(496): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(547): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(573): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Sniper.cpp(575): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+     1>Sniper.cpp(690): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(715): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(726): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(736): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(795): warning C4305: 'argument': truncation from 'double' to 'float32'
+     1>Sniper.cpp(799): warning C4305: 'argument': truncation from 'double' to 'float32'
+     1>Sniper.cpp(802): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(815): warning C4305: 'argument': truncation from 'double' to 'float32'
+     1>Sniper.cpp(819): warning C4305: 'argument': truncation from 'double' to 'float32'
+     1>Sniper.cpp(822): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(834): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(846): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(874): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(928): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Sniper.cpp(974): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(992): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(993): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(995): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(996): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(998): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(1013): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Sniper.cpp(1014): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Sniper.cpp(1016): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+     1>Sniper.cpp(1135): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(1171): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Sniper.cpp(1172): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Sniper.cpp(1174): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+     1>Sniper.cpp(1226): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(1250): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Sniper.cpp(1269): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Sniper.cpp(1274): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+     1>Sniper.cpp(1275): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+     1>Sniper.cpp(1291): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Sniper.cpp(1296): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+     1>Sniper.cpp(1297): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+     1>Sniper.cpp(1354): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(1359): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(1360): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(1372): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(1377): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(1378): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(1431): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(1563): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(1575): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(1586): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(1597): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(1648): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(1674): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(1685): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(1695): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(1758): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(1813): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Sniper.cpp(1815): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+     1>Sniper.cpp(1926): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Sniper.cpp(1972): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(1985): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(1986): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(1988): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(1989): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(1991): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(2019): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Sniper.cpp(2020): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Sniper.cpp(2022): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+     1>Sniper.cpp(2055): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(2104): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Sniper.cpp(2105): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Sniper.cpp(2107): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+     1>Sniper.cpp(2140): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(2157): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Sniper.cpp(2183): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Sniper.cpp(2188): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+     1>Sniper.cpp(2189): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+     1>Sniper.cpp(2205): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+     1>Sniper.cpp(2210): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+     1>Sniper.cpp(2211): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+     1>Sniper.cpp(2228): warning C4305: 'initializing': truncation from '__int64' to 'float'
+     1>Sniper.cpp(2230): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(2261): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+     1>Sniper.cpp(2262): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+     1>Sniper.cpp(2267): warning C4305: '=': truncation from '__int64' to 'float'
+     1>Sniper.cpp(2268): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(2330): warning C4305: 'initializing': truncation from '__int64' to 'float'
+     1>Sniper.cpp(2332): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(2363): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+     1>Sniper.cpp(2364): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+     1>Sniper.cpp(2369): warning C4305: '=': truncation from '__int64' to 'float'
+     1>Sniper.cpp(2370): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(2497): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(2565): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(2570): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(2571): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(2586): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(2591): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(2592): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(2604): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(2609): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(2610): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(2625): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(2630): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(2631): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(2659): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(2664): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(2665): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(2682): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(2683): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(2699): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(2700): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(2716): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(2717): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>Sniper.cpp(2734): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(2738): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(2742): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(2746): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(2750): warning C4018: '<': signed/unsigned mismatch
+     1>Sniper.cpp(2754): warning C4018: '<': signed/unsigned mismatch
+         UIElement.cpp
+     1>c:\users\davidgerigpc\desktop\fyp\fyp\RayCastCallBackCustom.h(5): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>UIElement.cpp(26): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>UIElement.cpp(53): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>UIElement.cpp(64): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>UIElement.cpp(79): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>UIElement.cpp(101): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>UIElement.cpp(123): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>UIElement.cpp(145): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>UIElement.cpp(167): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>UIElement.cpp(189): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>UIElement.cpp(211): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\DavidGerigPC\Desktop\FYP\Release\FYP.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:C:\SFML\lib /LIBPATH:./lib Box2D.lib "sfml-graphics-d.lib" "sfml-window-d.lib" "sfml-system-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\DavidGerigPC\Desktop\FYP\Release\FYP.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\DavidGerigPC\Desktop\FYP\Release\FYP.lib" /MACHINE:X86 /SAFESEH Release\AnimatedSprite.obj
          Release\Animation.obj
@@ -46,13 +396,13 @@
          Release\Wreck.obj
          Release\WreckManager.obj
          Generating code
-         4 of 2067 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
-           0 functions were new in current compilation
-           0 functions had inline decision re-evaluated but remain unchanged
+         3 of 2068 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+           1 functions were new in current compilation
+           34 functions had inline decision re-evaluated but remain unchanged
          Finished generating code
          FYP.vcxproj -> C:\Users\DavidGerigPC\Desktop\FYP\Release\FYP.exe
      1>Done Building Project "C:\Users\DavidGerigPC\Desktop\FYP\FYP\FYP.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:02.56
+Time Elapsed 00:00:07.81

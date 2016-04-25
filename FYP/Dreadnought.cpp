@@ -934,7 +934,11 @@ void Dreadnought::enemyUpdate()
 			{
 				if (type == "enemy")
 				{
+#ifdef DEBUG
 					chooseNextAction();
+#else
+					chooseNextActionTest();
+#endif
 				}
 				else if (type == "ally")
 				{
@@ -1022,7 +1026,11 @@ void Dreadnought::enemyUpdate()
 	case(TurnState::NONE) :
 		if (type == "enemy")
 		{
+#ifdef DEBUG
 			chooseNextAction();
+#else
+			chooseNextActionTest();
+#endif
 		}
 		else if (type == "ally")
 		{
@@ -1270,6 +1278,92 @@ void Dreadnought::enemyUpdate()
 
 void Dreadnought::chooseNextAction()
 {
+
+	bool capturePointFree = false;
+	bool enemyNearby = false;
+	bool capturingPoint = false;
+	float shortestDist = 999999999999;
+
+
+	for (int i = 0; i < Level::GetInstance()->capPoints.size(); i++) //1
+	{
+		if (Level::GetInstance()->capPoints.at(i)->owner != "Red") //2
+		{
+			float dist = distance(shipSprite.getPosition(), Level::GetInstance()->capPoints.at(i)->getSprite().getPosition()); //3
+
+			if ( dist < shortestDist) //4
+			{
+				targetCapPoint = Level::GetInstance()->capPoints.at(i); //5
+				capturePointFree = true; //6
+				shortestDist = dist;// 7
+			}
+		}
+	} // 8
+
+	if (shortestDist < 300) //9
+	{
+		capturingPoint = true; //10
+		currentTState = NONE; //11
+		currentMState = NONE2; //12
+		capturePointFree = false; //13
+	}
+	else if (capturePointFree == true) //13
+	{
+		followPoint = targetCapPoint->getSprite().getPosition(); //14
+		capturingPoint = false; //15
+		currentTState = FOLLOW; //16
+		currentMState = FORWARD; //17
+	}
+	else if (shortestDist == 999999999999) //18
+	{
+		followPoint.x = (rand() % 4000) - 2000; //19
+		followPoint.y = (rand() % 4000) - 2000; //20
+		currentTState = FOLLOW; //21
+		currentMState = FORWARD; //22
+	}
+
+	shortestDist = 99999999999;
+	for (int i = 0; i < ShipManager::GetInstance()->ships.size(); i++) //5
+	{
+		if (ShipManager::GetInstance()->ships.at(i)->type == "player" || ShipManager::GetInstance()->ships.at(i)->type == "ally")
+		{
+			if ((ShipManager::GetInstance()->ships.at(i)->shipType == "Sniper" && ShipManager::GetInstance()->ships.at(i)->shield == true))
+			{
+
+			}
+			else
+			{
+				float dist = distance(ShipManager::GetInstance()->ships.at(i)->getSprite().getPosition(), shipSprite.getPosition());
+				if (dist < 800)
+				{
+					if (dist < shortestDist)
+					{
+						shortestDist = dist;
+						targetShip = ShipManager::GetInstance()->ships.at(i);
+						enemyNearby = true;
+					}
+				}
+			}
+		}
+	}
+
+	if (enemyNearby == true)
+	{
+		currentFState = FIRING;
+		firing = true;
+		targetPos = targetShip->getSprite().getPosition();
+	}
+	else //7
+	{
+		currentFState = NONE3;
+		firing = false;
+		targetPos = sf::Vector2f(0, -10000);
+	}
+}
+
+void Dreadnought::chooseNextActionTest()
+{
+
 	bool capturePointFree = false;
 	bool enemyNearby = false;
 	bool capturingPoint = false;
@@ -1283,7 +1377,7 @@ void Dreadnought::chooseNextAction()
 			assert(Level::GetInstance()->capPoints.at(i)->owner == "Blue" || Level::GetInstance()->capPoints.at(i)->owner == "Nuetral");
 			float dist = distance(shipSprite.getPosition(), Level::GetInstance()->capPoints.at(i)->getSprite().getPosition()); //3
 
-			if ( dist < shortestDist) //4
+			if (dist < shortestDist) //4
 			{
 				assert(dist < shortestDist);
 				targetCapPoint = Level::GetInstance()->capPoints.at(i); //5
@@ -1356,6 +1450,7 @@ void Dreadnought::chooseNextAction()
 		targetPos = sf::Vector2f(0, -10000);
 	}
 }
+
 
 void Dreadnought::chooseNextActionAlly()
 {

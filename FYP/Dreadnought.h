@@ -115,6 +115,7 @@ public:
 	void updateRayPoints();
 	void DeleteAll();
 	void chooseNextAction();
+	void chooseNextActionTest();
 	void chooseNextActionAlly();
 	void AbilityOne();
 	void AbilityTwo();
